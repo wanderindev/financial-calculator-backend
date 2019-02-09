@@ -2,7 +2,7 @@ from flask import Flask
 
 from config import config
 from utils import get_balances, get_deposits, get_periods, get_table_a, \
-    get_table_m, parse_args
+    get_table_m, parse_args, pres_val
 
 
 def create_app(config_name):
@@ -63,5 +63,20 @@ def create_app(config_name):
             'table_a': get_table_a(periods_a, deposits, interests, balances,
                                    freq)
         }
+
+    @app.route('/calc2')
+    def calc1(kwargs):
+        data = parse_args(kwargs)
+
+        fin_bal = data.get('fin_bal')
+        freq = data.get('freq')
+        num_of_years = data.get('num_of_years')
+        rate = data.get('rate')
+
+        pv = pres_val(rate / (100 * freq),
+                      freq * num_of_years,
+                      fin_bal)
+
+        return {'ini_dep': round(-pv, 2)}
 
     return app
