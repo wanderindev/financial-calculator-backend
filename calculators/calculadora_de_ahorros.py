@@ -6,7 +6,7 @@ from utils import get_balances, get_deposits, get_periods, get_table_a, \
 
 
 @calculators.route('/calculadora-de-ahorros', methods=['POST'])
-def calculator():
+def calculadora_de_ahorros():
     data = parse_data(request.get_json())
 
     ini_dep = data.get('ini_dep')
