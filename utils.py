@@ -1,5 +1,7 @@
 from math import ceil, log
 
+HEADERS = {'Content-Type': 'application/json'}
+
 
 def get_balances(periods, deposits, ini_dep, rate, freq,
                  dep_when):
@@ -93,46 +95,46 @@ def get_time_scale(freq):
             return item[0], item[2]
 
 
-def parse_args(kwargs):
-    for k, v in kwargs.items():
+def parse_data(data):
+    for k, v in data.items():
         if not v:
             v = 0
 
         if k in ['freq', 'extra_dep_f', 'dep_when']:
-            kwargs[k] = int(v)
+            data[k] = int(v)
         elif k in ['extra_dep_start']:
-            kwargs[k] = int(str(v).replace(',', ''))
+            data[k] = int(str(v).replace(',', ''))
         elif k in ['ini_dep', 'reg_dep', 'num_of_years', 'rate', 'extra_dep']:
-            kwargs[k] = float(str(v).replace(',', ''))
+            data[k] = float(str(v).replace(',', ''))
 
-    kwargs['time_scale'] = get_time_scale(kwargs['freq'])
+    data['time_scale'] = get_time_scale(data['freq'])
 
-    return kwargs
-
-
-def fut_val(r, nper, pv):
-    return -pv * pow((1 + r), nper)
+    return data
 
 
-def nper(r, payment, pv):
-    return log(pow((1 - (pv * r) / payment), -1)) / log(1 + r)
+def fut_val(r, _nper, pv):
+    return -pv * pow((1 + r), _nper)
 
 
-def payment(r, nper, pv, fv=0, t=0):
-    q = pow(1 + r, nper)
+def nper(r, _payment, pv):
+    return log(pow((1 - (pv * r) / _payment), -1)) / log(1 + r)
+
+
+def payment(r, _nper, pv, fv=0, t=0):
+    q = pow(1 + r, _nper)
 
     return - (r * (fv + (q * pv))) / ((-1 + q) * (1 + r * t))
 
 
-def pres_val(r, nper, fv):
-    return -fv / pow((1 + r), nper)
+def pres_val(r, _nper, fv):
+    return -fv / pow((1 + r), _nper)
 
 
-def pres_val_annuity(r, nper, payment):
-    return payment * (1 - pow((1 + r), -1 * nper)) / r
+def pres_val_annuity(r, _nper, _payment):
+    return _payment * (1 - pow((1 + r), -1 * _nper)) / r
 
 
-def interest_rate(nper, pmt, pv, fv=0, t=0, guess=0.1):
+def interest_rate(_nper, pmt, pv, fv=0, t=0, guess=0.1):
     low = 0
     high = 1
     tolerance = abs(0.00000005 * pmt) or 0.001
@@ -143,7 +145,7 @@ def interest_rate(nper, pmt, pv, fv=0, t=0, guess=0.1):
         balance = pv
 
         # Calculate the final balance, based on loan conditions.
-        for j in range(nper):
+        for j in range(_nper):
             if not t:
                 # Apply interests before payment
                 balance = balance * (1 + guess) + pmt

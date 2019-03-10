@@ -7,11 +7,6 @@ RUN apk update \
   && apk add postgresql-dev
 
 ENV INSTALL_PATH /fc
-# ENV SECRET_KEY 'CmSAGpcN3dV85DByPqcCqHSY3Zh3'
-# ENV DEBUG=False
-# ENV TESTING=False
-# ENV FLASK_CONFIG 'production'
-
 RUN printenv
 
 RUN mkdir -p $INSTALL_PATH
