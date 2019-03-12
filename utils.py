@@ -100,7 +100,7 @@ def parse_data(data):
         if not v:
             v = 0
 
-        if k in ['freq', 'extra_dep_f', 'dep_when']:
+        if k in ['freq', 'extra_dep_f', 'dep_when', 'extra_dep_r']:
             data[k] = int(v)
         elif k in ['extra_dep_start']:
             data[k] = int(str(v).replace(',', ''))
