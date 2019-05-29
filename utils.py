@@ -33,8 +33,8 @@ def get_balances(periods, deposits, ini_dep, rate, freq,
     return interests, agg_interests, agg_deposits, balances
 
 
-def get_deposits(ini_dep, reg_dep, extra_dep, extra_dep_start, extra_dep_f,
-                 periods):
+def get_deposits(ini_dep, reg_dep, extra_dep, extra_dep_start,
+                 extra_dep_f, periods):
     # Build a list of regular deposits.
     reg_deps = [reg_dep for _ in periods]
     reg_deps[0] = reg_deps[0] + ini_dep
@@ -59,6 +59,14 @@ def get_periods(freq, num_of_years):
     return [x + 1 for x in range(ceil(freq * num_of_years))], \
            [x + 1 for x in range(ceil(12 * num_of_years))], \
            [x + 1 for x in range(ceil(1 * num_of_years))]
+
+
+def get_table(periods, deposits, interests, balances):
+    return [dict(p='{:0,.0f}'.format(periods[x - 1]),
+                 d='{:0,.2f}'.format(deposits[x - 1]),
+                 i='{:0,.2f}'.format(interests[x - 1]),
+                 b='{:0,.2f}'.format(balances[x - 1]))
+            for x in periods]
 
 
 def get_table_m(periods_m, deposits, interests, balances, freq):
@@ -104,7 +112,8 @@ def parse_data(data):
             data[k] = int(v)
         elif k in ['extra_dep_start']:
             data[k] = int(str(v).replace(',', ''))
-        elif k in ['ini_dep', 'reg_dep', 'num_of_years', 'rate', 'extra_dep']:
+        elif k in ['ini_dep', 'reg_dep', 'fin_bal',
+                   'num_of_years', 'rate', 'extra_dep']:
             data[k] = float(str(v).replace(',', ''))
 
     data['time_scale'] = get_time_scale(data['freq'])
