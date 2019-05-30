@@ -26,7 +26,7 @@ def ahorros_para_lograr_meta():
                            freq * num_of_years,
                            0,
                            fin_bal + fv,
-                           1)
+                           dep_when)
 
     deposits, reg_deps, extra_deps = get_deposits(ini_dep,
                                                   reg_dep,

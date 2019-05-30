@@ -5,7 +5,7 @@ HEADERS = {'Content-Type': 'application/json'}
 
 def get_balances(periods, deposits, ini_dep, rate, freq,
                  dep_when):
-    balance = 0 if not dep_when else ini_dep
+    balance = 0 if dep_when else ini_dep
     balances = []
 
     interests = []
@@ -17,10 +17,12 @@ def get_balances(periods, deposits, ini_dep, rate, freq,
 
     for x in periods:
         if dep_when:
-            interest = round(balance * rate / (100 * freq), 2)
+            interest = round((balance + deposits[x - 1]) * rate / (100 * freq),
+                             2)
         else:
             interest = round((balance + deposits[x - 1]) * rate / (100 * freq),
                              2)
+            interest = round(balance * rate / (100 * freq), 2)
 
         agg_interest += interest
         agg_deposit += deposits[x - 1]
