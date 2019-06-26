@@ -1,6 +1,7 @@
 from math import ceil
 
 
+# noinspection PyTypeChecker
 class Calculator:
     freq_items = [
         (u'Año', 1, 10),
@@ -27,13 +28,16 @@ class Calculator:
         self.time_scale, rows_per_page = self.get_time_scale(self.freq)
         self.fin_bal = self.get_float(kwargs.get('fin_bal', 0))
 
-    # noinspection PyTypeChecker
     def get_deposits(self):
-        periods = self.get_periods()
+        periods, _, _ = self.get_periods()
         reg_deps = self.get_reg_deps(periods)
         extra_deps = self.get_extra_deps(periods)
 
-        return [round(reg_deps[x - 1] + extra_deps[x - 1], 2) for x in periods]
+        deposits = [round(reg_deps[x - 1] + extra_deps[x - 1], 2)
+                    for x in periods]
+        a_deposits = [round(sum(deposits[:x]), 2) for x in periods]
+
+        return deposits, a_deposits
 
     def get_extra_deps(self, periods):
         extra_dep_p = []
@@ -56,6 +60,29 @@ class Calculator:
     def get_float(val):
         return float(str(val).replace(',', ''))
 
+    def get_savings_ints_and_bals(self):
+        periods, _, _ = self.get_periods()
+        deposits, _ = self.get_deposits()
+        balances = []
+        interests = []
+        rate = self.rate / (100 * self.freq)
+
+        balance = 0 if self.dep_when else self.ini_dep
+
+        for x in periods:
+            if self.dep_when:
+                interest = round((balance + deposits[x - 1]) * rate, 2)
+            else:
+                interest = round(balance * rate, 2)
+
+            interests.append(interest)
+            balance = sum(deposits[:x]) + sum(interests[:x])
+            balances.append(balance)
+
+        a_interests = [round(sum(interests[:x]), 2) for x in periods]
+
+        return interests, a_interests, balances
+
     def get_periods(self):
         return [x + 1 for x in range(ceil(self.freq * self.num_of_years))], \
                [x + 1 for x in range(ceil(12 * self.num_of_years))], \
@@ -67,38 +94,39 @@ class Calculator:
 
         return reg_deps
 
-    # noinspection PyTypeChecker
-    def get_saving_balances(self):
-        periods = self.get_periods()
-        deposits = self.get_deposits()
+    def get_savings_tables(self):
+        periods, periods_m, periods_a = self.get_periods()
+        deposits, _ = self.get_deposits()
+        interests, _, balances = self.get_savings_ints_and_bals()
+        table_m = None
 
-        balance = 0 if self.dep_when else self.ini_dep
-        balances = []
+        table = [dict(p='{:0,.0f}'.format(periods[x - 1]),
+                      d='{:0,.2f}'.format(deposits[x - 1]),
+                      i='{:0,.2f}'.format(interests[x - 1]),
+                      b='{:0,.2f}'.format(balances[x - 1]))
+                 for x in periods]
 
-        interests = []
-        agg_interest = 0
-        agg_interests = []
+        table_a = [dict(p='{:0,.0f}'.format(periods_a[x - 1]),
+                        d='{:0,.2f}'.format(
+                            sum(deposits[(x - 1)*self.freq:x*self.freq])),
+                        i='{:0,.2f}'.format(
+                            sum(interests[(x - 1)*self.freq:x*self.freq])),
+                        b='{:0,.2f}'.format(balances[x*self.freq-1]))
+                   for x in periods_a]
 
-        agg_deposit = 0
-        agg_deposits = []
+        if self.freq >= 12:
+            table_m = [dict(p='{:0,.0f}'.format(periods_m[x - 1]),
+                            d='{:0,.2f}'.format(
+                                sum(deposits[int((x-1)*self.freq/12):
+                                             int(x*self.freq/12)])),
+                            i='{:0,.2f}'.format(
+                                sum(interests[int((x-1)*self.freq/12):
+                                              int(x*self.freq/12)])),
+                            b='{:0,.2f}'.format(
+                                balances[int(x*self.freq/12)-1]))
+                       for x in periods_m]
 
-        for x in periods:
-            if self.dep_when:
-                interest = round(
-                    (balance + deposits[x - 1]) * self.rate
-                    / (100 * self.freq), 2)
-            else:
-                interest = round(balance * self.rate / (100 * self.freq), 2)
-
-            agg_interest += interest
-            agg_deposit += deposits[x - 1]
-            interests.append(interest)
-            agg_interests.append(agg_interest)
-            agg_deposits.append(agg_deposit)
-            balance = sum(deposits[:x]) + sum(interests[:x])
-            balances.append(balance)
-
-        return interests, agg_interests, agg_deposits, balances
+        return table, table_m, table_a
 
     def get_time_scale(self, freq):
         for item in self.freq_items:
