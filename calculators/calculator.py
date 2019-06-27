@@ -53,12 +53,44 @@ class Calculator:
         return [self.extra_dep if x in extra_dep_p else 0 for x in periods]
 
     @staticmethod
+    def get_float(val):
+        return float(str(val).replace(',', ''))
+
+    def get_fut_val(self, pres_val):
+        rate = self.rate / (100 * self.freq)
+        nper = self.freq * self.num_of_years
+
+        return -pres_val * pow((1 + rate), nper)
+
+    @staticmethod
     def get_int(val):
         return int(str(val).replace(',', ''))
 
-    @staticmethod
-    def get_float(val):
-        return float(str(val).replace(',', ''))
+    def get_payment(self, pres_val, fut_val=0):
+        rate = self.rate / (100 * self.freq)
+        nper = self.freq * self.num_of_years
+
+        q = pow(1 + rate, nper)
+
+        return -(rate * (fut_val + (q * pres_val))) \
+            / ((-1 + q) * (1 + rate * self.dep_when))
+
+    def get_periods(self):
+        return [x + 1 for x in range(ceil(self.freq * self.num_of_years))], \
+               [x + 1 for x in range(ceil(12 * self.num_of_years))], \
+               [x + 1 for x in range(ceil(1 * self.num_of_years))]
+
+    def get_reg_dep(self):
+        fut_val = self.get_fut_val(self.ini_dep) + self.fin_bal
+        self.reg_dep = round(-self.get_payment(0, fut_val), 2)
+
+        return self.reg_dep
+
+    def get_reg_deps(self, periods):
+        reg_deps = [self.reg_dep for _ in periods]
+        reg_deps[0] = reg_deps[0] + self.ini_dep
+
+        return reg_deps
 
     def get_savings_ints_and_bals(self):
         periods, _, _ = self.get_periods()
@@ -82,17 +114,6 @@ class Calculator:
         a_interests = [round(sum(interests[:x]), 2) for x in periods]
 
         return interests, a_interests, balances
-
-    def get_periods(self):
-        return [x + 1 for x in range(ceil(self.freq * self.num_of_years))], \
-               [x + 1 for x in range(ceil(12 * self.num_of_years))], \
-               [x + 1 for x in range(ceil(1 * self.num_of_years))]
-
-    def get_reg_deps(self, periods):
-        reg_deps = [self.reg_dep for _ in periods]
-        reg_deps[0] = reg_deps[0] + self.ini_dep
-
-        return reg_deps
 
     def get_savings_tables(self):
         periods, periods_m, periods_a = self.get_periods()
