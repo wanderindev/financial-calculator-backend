@@ -1,5 +1,7 @@
 from math import ceil
 
+from .utils import fut_val, payment, pres_val, rate
+
 
 # noinspection PyTypeChecker
 class Calculator:
@@ -56,33 +58,43 @@ class Calculator:
     def get_float(val):
         return float(str(val).replace(',', ''))
 
-    def get_fut_val(self, pres_val):
-        rate = self.rate / (100 * self.freq)
-        nper = self.freq * self.num_of_years
-
-        return -pres_val * pow((1 + rate), nper)
-
     @staticmethod
     def get_int(val):
         return int(str(val).replace(',', ''))
 
-    def get_payment(self, pres_val, fut_val=0):
-        rate = self.rate / (100 * self.freq)
-        nper = self.freq * self.num_of_years
+    def get_nper(self):
+        _rate = self.rate / (100 * self.freq)
+        limit = ceil(int(self.fin_bal - self.ini_dep) / self.reg_dep)
+        balance = round((self.ini_dep + self.reg_dep) * (1 + _rate), 2) \
+            if self.dep_when \
+            else round(self.ini_dep * (1 + _rate), 2)
 
-        q = pow(1 + rate, nper)
+        for x in range(2, limit):
+            balance += self.reg_dep
+            interest = round(balance * _rate, 2)
+            balance += interest
 
-        return -(rate * (fut_val + (q * pres_val))) \
-            / ((-1 + q) * (1 + rate * self.dep_when))
+            if balance > self.fin_bal:
+                self.num_of_years = round(x / self.freq, 2)
+                return x
 
     def get_periods(self):
         return [x + 1 for x in range(ceil(self.freq * self.num_of_years))], \
                [x + 1 for x in range(ceil(12 * self.num_of_years))], \
                [x + 1 for x in range(ceil(1 * self.num_of_years))]
 
+    def get_pres_val(self):
+        _rate = self.rate / (100 * self.freq)
+        nper = self.freq * self.num_of_years
+
+        return pres_val(_rate, nper, self.fin_bal)
+
     def get_reg_dep(self):
-        fut_val = self.get_fut_val(self.ini_dep) + self.fin_bal
-        self.reg_dep = round(-self.get_payment(0, fut_val), 2)
+        _rate = self.rate / (100 * self.freq)
+        nper = self.freq * self.num_of_years
+        t = self.dep_when
+        fv = fut_val(_rate, nper, self.ini_dep) + self.fin_bal
+        self.reg_dep = round(-payment(_rate, nper, 0, fv, t), 2)
 
         return self.reg_dep
 
@@ -97,15 +109,15 @@ class Calculator:
         deposits, _ = self.get_deposits()
         balances = []
         interests = []
-        rate = self.rate / (100 * self.freq)
+        _rate = self.rate / (100 * self.freq)
 
         balance = 0 if self.dep_when else self.ini_dep
 
         for x in periods:
             if self.dep_when:
-                interest = round((balance + deposits[x - 1]) * rate, 2)
+                interest = round((balance + deposits[x - 1]) * _rate, 2)
             else:
-                interest = round(balance * rate, 2)
+                interest = round(balance * _rate, 2)
 
             interests.append(interest)
             balance = sum(deposits[:x]) + sum(interests[:x])
@@ -114,6 +126,20 @@ class Calculator:
         a_interests = [round(sum(interests[:x]), 2) for x in periods]
 
         return interests, a_interests, balances
+
+    def get_savings_rate(self):
+        nper = self.freq * self.num_of_years
+        pmt = self.reg_dep
+        pv = self.ini_dep
+        fv = -self.fin_bal
+        t = self.dep_when
+
+        success, r = rate(nper, pmt, pv, fv, t)
+
+        if success:
+            return r
+
+        return 'No found'
 
     def get_savings_tables(self):
         periods, periods_m, periods_a = self.get_periods()
