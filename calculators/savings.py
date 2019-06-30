@@ -2,6 +2,7 @@ from flask import jsonify, request
 
 from .calculator import Calculator
 from .calculators import calculators
+from .utils import aggregate, format_tables
 
 HEADERS = {'Content-Type': 'application/json'}
 
@@ -10,12 +11,17 @@ HEADERS = {'Content-Type': 'application/json'}
 def ahorros_para_lograr_meta():
     calculator = Calculator(**request.get_json())
 
-    reg_dep = calculator.get_reg_dep()
+    reg_dep = calculator.get_reg_dep_savings()
     time_scale = calculator.time_scale
-    periods, _, _ = calculator.get_periods()
-    deposits, a_deposits = calculator.get_deposits()
-    interests, a_interests, balances = calculator.get_savings_ints_and_bals()
-    table, table_m, table_a = calculator.get_savings_tables()
+    periods = calculator.periods
+    deposits = calculator.get_deposits()
+    a_deposits = aggregate(deposits, periods)
+    interests = calculator.get_interests_savings()
+    a_interests = aggregate(interests, periods)
+    balances = calculator.get_balances_savings()
+    table = format_tables(calculator, 1)
+    table_m = format_tables(calculator, calculator.freq / 12)
+    table_a = format_tables(calculator, calculator.freq / 1)
 
     return jsonify({
         'reg_dep': reg_dep,
@@ -38,10 +44,15 @@ def calculadora_de_ahorros():
     calculator = Calculator(**request.get_json())
 
     time_scale = calculator.time_scale
-    periods, _, _ = calculator.get_periods()
-    deposits, a_deposits = calculator.get_deposits()
-    interests, a_interests, balances = calculator.get_savings_ints_and_bals()
-    table, table_m, table_a = calculator.get_savings_tables()
+    periods = calculator.periods
+    deposits = calculator.get_deposits()
+    a_deposits = aggregate(deposits, periods)
+    interests = calculator.get_interests_savings()
+    a_interests = aggregate(interests, periods)
+    balances = calculator.get_balances_savings()
+    table = format_tables(calculator, 1)
+    table_m = format_tables(calculator, calculator.freq / 12)
+    table_a = format_tables(calculator, calculator.freq / 1)
 
     return jsonify({
         'time_scale': time_scale,
@@ -62,7 +73,7 @@ def calculadora_de_ahorros():
 def tasa_de_interes_requerida():
     calculator = Calculator(**request.get_json())
 
-    rate = calculator.get_savings_rate()
+    rate = calculator.get_rate_savings()
 
     return jsonify({
         'rate': rate
@@ -73,12 +84,17 @@ def tasa_de_interes_requerida():
 def tiempo_para_lograr_meta():
     calculator = Calculator(**request.get_json())
 
-    nper = calculator.get_nper()
+    nper = calculator.get_nper_savings()
     time_scale = calculator.time_scale
-    periods, _, _ = calculator.get_periods()
-    deposits, a_deposits = calculator.get_deposits()
-    interests, a_interests, balances = calculator.get_savings_ints_and_bals()
-    table, table_m, table_a = calculator.get_savings_tables()
+    periods = calculator.get_periods()
+    deposits = calculator.get_deposits()
+    a_deposits = aggregate(deposits, periods)
+    interests = calculator.get_interests_savings()
+    a_interests = aggregate(interests, periods)
+    balances = calculator.get_balances_savings()
+    table = format_tables(calculator, 1)
+    table_m = format_tables(calculator, calculator.freq / 12)
+    table_a = format_tables(calculator, calculator.freq / 1)
 
     return jsonify({
         'nper': nper,

@@ -1,6 +1,5 @@
 from math import ceil
-
-from .utils import fut_val, payment, pres_val, rate
+from numpy import fv, nper, pmt, pv, rate
 
 
 # noinspection PyTypeChecker
@@ -29,30 +28,51 @@ class Calculator:
         self.dep_when = self.get_int(kwargs.get('dep_when', 0))
         self.time_scale, rows_per_page = self.get_time_scale(self.freq)
         self.fin_bal = self.get_float(kwargs.get('fin_bal', 0))
+        self.periods = self.get_periods()
+        self.periods_a = self.get_periods_a()
+        self.periods_m = self.get_periods_m()
+        self.deposits = []
+        self.interests = []
+        self.balances = []
+
+    def get_balances_savings(self):
+        balances = []
+
+        for x in self.periods:
+            balances.append(sum(self.deposits[:x]) + sum(self.interests[:x]))
+
+        self.balances = balances
+
+        return self.balances
 
     def get_deposits(self):
-        periods, _, _ = self.get_periods()
-        reg_deps = self.get_reg_deps(periods)
-        extra_deps = self.get_extra_deps(periods)
+        reg_deps = self.get_deposits_r()
+        extra_deps = self.get_deposits_e()
 
-        deposits = [round(reg_deps[x - 1] + extra_deps[x - 1], 2)
-                    for x in periods]
-        a_deposits = [round(sum(deposits[:x]), 2) for x in periods]
+        self.deposits = [round(reg_deps[x-1] + extra_deps[x-1], 2)
+                         for x in self.periods]
 
-        return deposits, a_deposits
+        return self.deposits
 
-    def get_extra_deps(self, periods):
+    def get_deposits_e(self):
         extra_dep_p = []
 
         if self.extra_dep:
             extra_dep_p.append(self.extra_dep_start)
             if self.extra_dep_f:
-                for x in periods[self.extra_dep_start + 1:]:
+                for x in self.periods[self.extra_dep_start + 1:]:
                     if not (x - self.extra_dep_start) \
                            % (12 / self.extra_dep_f):
                         extra_dep_p.append(x)
 
-        return [self.extra_dep if x in extra_dep_p else 0 for x in periods]
+        return [self.extra_dep if x in extra_dep_p else 0
+                for x in self.periods]
+
+    def get_deposits_r(self):
+        reg_deps = [self.reg_dep for _ in self.periods]
+        reg_deps[0] += self.ini_dep
+
+        return reg_deps
 
     @staticmethod
     def get_float(val):
@@ -62,118 +82,76 @@ class Calculator:
     def get_int(val):
         return int(str(val).replace(',', ''))
 
-    def get_nper(self):
+    def get_interests_savings(self):
         _rate = self.rate / (100 * self.freq)
-        limit = ceil(int(self.fin_bal - self.ini_dep) / self.reg_dep)
-        balance = round((self.ini_dep + self.reg_dep) * (1 + _rate), 2) \
-            if self.dep_when \
-            else round(self.ini_dep * (1 + _rate), 2)
+        interests = [round(self.deposits[0] * _rate
+                           if self.dep_when else self.ini_dep * _rate, 2)]
 
-        for x in range(2, limit):
-            balance += self.reg_dep
-            interest = round(balance * _rate, 2)
-            balance += interest
+        for x in self.periods[1:]:
+            if self.dep_when:
+                interest = round((sum(self.deposits[:x]) + sum(interests[:x]))
+                                 * _rate, 2)
+            else:
+                interest = round((sum(self.deposits[:x-1]) +
+                                  sum(interests[:x-1])) * _rate, 2)
 
-            if balance > self.fin_bal:
-                self.num_of_years = round(x / self.freq, 2)
-                return x
+            interests.append(interest)
+
+        self.interests = interests
+
+        return self.interests
+
+    def get_nper_savings(self):
+        _nper = ceil(nper(self.rate / (100 * self.freq),
+                          -self.reg_dep,
+                          -self.ini_dep,
+                          self.fin_bal,
+                          self.dep_when))
+
+        self.num_of_years = round(_nper / self.freq, 2)
+        self.periods = self.get_periods()
+        self.periods_a = self.get_periods_a()
+        self.periods_m = self.get_periods_m()
+
+        return _nper
 
     def get_periods(self):
-        return [x + 1 for x in range(ceil(self.freq * self.num_of_years))], \
-               [x + 1 for x in range(ceil(12 * self.num_of_years))], \
-               [x + 1 for x in range(ceil(1 * self.num_of_years))]
+        return [x + 1 for x in range(ceil(self.freq * self.num_of_years))]
+
+    def get_periods_a(self):
+        return [x + 1 for x in range(ceil(1 * self.num_of_years))]
+
+    def get_periods_m(self):
+        return [x + 1 for x in range(ceil(12 * self.num_of_years))]
 
     def get_pres_val(self):
-        _rate = self.rate / (100 * self.freq)
-        nper = self.freq * self.num_of_years
+        return pv(self.rate / (100 * self.freq),
+                  self.freq * self.num_of_years,
+                  0,
+                  self.fin_bal,
+                  self.dep_when)
 
-        return pres_val(_rate, nper, self.fin_bal)
+    def get_reg_dep_savings(self):
+        _fv = fv(self.rate / (100 * self.freq),
+                 self.freq * self.num_of_years,
+                 0,
+                 self.ini_dep,
+                 self.dep_when) + self.fin_bal
 
-    def get_reg_dep(self):
-        _rate = self.rate / (100 * self.freq)
-        nper = self.freq * self.num_of_years
-        t = self.dep_when
-        fv = fut_val(_rate, nper, self.ini_dep) + self.fin_bal
-        self.reg_dep = round(-payment(_rate, nper, 0, fv, t), 2)
+        self.reg_dep = -pmt(self.rate / (100 * self.freq),
+                            self.freq * self.num_of_years,
+                            0,
+                            _fv,
+                            self.dep_when)
 
         return self.reg_dep
 
-    def get_reg_deps(self, periods):
-        reg_deps = [self.reg_dep for _ in periods]
-        reg_deps[0] = reg_deps[0] + self.ini_dep
-
-        return reg_deps
-
-    def get_savings_ints_and_bals(self):
-        periods, _, _ = self.get_periods()
-        deposits, _ = self.get_deposits()
-        balances = []
-        interests = []
-        _rate = self.rate / (100 * self.freq)
-
-        balance = 0 if self.dep_when else self.ini_dep
-
-        for x in periods:
-            if self.dep_when:
-                interest = round((balance + deposits[x - 1]) * _rate, 2)
-            else:
-                interest = round(balance * _rate, 2)
-
-            interests.append(interest)
-            balance = sum(deposits[:x]) + sum(interests[:x])
-            balances.append(balance)
-
-        a_interests = [round(sum(interests[:x]), 2) for x in periods]
-
-        return interests, a_interests, balances
-
-    def get_savings_rate(self):
-        nper = self.freq * self.num_of_years
-        pmt = self.reg_dep
-        pv = self.ini_dep
-        fv = -self.fin_bal
-        t = self.dep_when
-
-        success, r = rate(nper, pmt, pv, fv, t)
-
-        if success:
-            return r
-
-        return 'No found'
-
-    def get_savings_tables(self):
-        periods, periods_m, periods_a = self.get_periods()
-        deposits, _ = self.get_deposits()
-        interests, _, balances = self.get_savings_ints_and_bals()
-        table_m = None
-
-        table = [dict(p='{:0,.0f}'.format(periods[x - 1]),
-                      d='{:0,.2f}'.format(deposits[x - 1]),
-                      i='{:0,.2f}'.format(interests[x - 1]),
-                      b='{:0,.2f}'.format(balances[x - 1]))
-                 for x in periods]
-
-        table_a = [dict(p='{:0,.0f}'.format(periods_a[x - 1]),
-                        d='{:0,.2f}'.format(
-                            sum(deposits[(x - 1)*self.freq:x*self.freq])),
-                        i='{:0,.2f}'.format(
-                            sum(interests[(x - 1)*self.freq:x*self.freq])),
-                        b='{:0,.2f}'.format(balances[x*self.freq-1]))
-                   for x in periods_a]
-
-        if self.freq >= 12:
-            table_m = [dict(p='{:0,.0f}'.format(periods_m[x - 1]),
-                            d='{:0,.2f}'.format(
-                                sum(deposits[int((x-1)*self.freq/12):
-                                             int(x*self.freq/12)])),
-                            i='{:0,.2f}'.format(
-                                sum(interests[int((x-1)*self.freq/12):
-                                              int(x*self.freq/12)])),
-                            b='{:0,.2f}'.format(
-                                balances[int(x*self.freq/12)-1]))
-                       for x in periods_m]
-
-        return table, table_m, table_a
+    def get_rate_savings(self):
+        return rate(self.freq * self.num_of_years,
+                    -self.reg_dep,
+                    -self.ini_dep,
+                    self.fin_bal,
+                    self.dep_when) * self.freq * 100
 
     def get_time_scale(self, freq):
         for item in self.freq_items:
