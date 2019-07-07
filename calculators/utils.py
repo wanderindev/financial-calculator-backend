@@ -1,5 +1,5 @@
 def aggregate(_list, periods):
-    return [round(sum(_list[:x]), 2) for x in periods]
+    return [round(sum(_list[:x]), 4) for x in periods]
 
 
 def format_tables(calculator, ff, _type):

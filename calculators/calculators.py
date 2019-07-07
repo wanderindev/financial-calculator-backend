@@ -9,3 +9,4 @@ from .savings import tasa_de_interes_requerida
 from .savings import tiempo_para_lograr_meta
 from .savings import valor_actual
 from .loans import calculadora_de_prestamos
+from .loans import tasa_de_interes_real

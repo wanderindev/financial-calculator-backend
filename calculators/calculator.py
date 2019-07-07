@@ -49,12 +49,16 @@ class Calculator:
         balances = []
 
         for x in self.periods:
-            balances.append(self.loan - sum(self.payments[:x]) +
-                            sum(self.interests[:x]))
+            bal = self.loan - sum(self.payments[:x]) + sum(self.interests[:x])
+            if bal < 0:
+                self.payments_r[-1] = self.reg_pmt + bal
+                self.payments[-1] = self.payments_r[-1] + self.payments_e[-1]
+                balances.append(0)
+            else:
+                balances.append(self.loan - sum(self.payments[:x]) +
+                                sum(self.interests[:x]))
 
-        self.balances = balances
-
-        return self.balances
+        return balances
 
     def get_balances_savings(self):
         balances = []
@@ -118,9 +122,7 @@ class Calculator:
 
             interests.append(interest)
 
-        self.interests = interests
-
-        return self.interests
+        return interests
 
     def get_interests_savings(self):
         _rate = self.rate / (100 * self.freq)
@@ -140,6 +142,19 @@ class Calculator:
         self.interests = interests
 
         return self.interests
+
+    def get_nper_loans(self):
+        _nper = ceil(nper(self.rate / (100 * self.freq),
+                          -self.reg_pmt,
+                          self.loan,
+                          when=self.pmt_when))
+
+        self.num_of_years = round(_nper / self.freq, 2)
+        self.periods = self.get_periods()
+        self.periods_a = self.get_periods_a()
+        self.periods_m = self.get_periods_m()
+
+        return _nper
 
     def get_nper_savings(self):
         _nper = ceil(nper(self.rate / (100 * self.freq),
@@ -161,6 +176,9 @@ class Calculator:
 
         self.payments = [round(self.payments_r[x-1] + self.payments_e[x-1], 2)
                          for x in self.periods]
+
+        self.interests = self.get_interests_loans()
+        self.balances = self.get_balances_loans()
 
         return self.payments, self.payments_e, self.payments_r
 
@@ -196,6 +214,13 @@ class Calculator:
                   0,
                   self.fin_bal,
                   self.dep_when)
+
+    def get_rate_loans(self):
+        return rate(self.freq * self.num_of_years,
+                    -self.reg_pmt,
+                    self.loan,
+                    0,
+                    self.pmt_when) * self.freq * 100
 
     def get_rate_savings(self):
         return rate(self.freq * self.num_of_years,
