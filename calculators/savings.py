@@ -2,9 +2,8 @@ from flask import jsonify, request
 
 from .calculator import Calculator
 from .calculators import calculators
+from config import HEADERS
 from .utils import aggregate, format_tables
-
-HEADERS = {'Content-Type': 'application/json'}
 
 
 @calculators.route('/ahorros-para-lograr-meta', methods=['POST'])
@@ -19,9 +18,9 @@ def ahorros_para_lograr_meta():
     interests = calculator.get_interests_savings()
     a_interests = aggregate(interests, periods)
     balances = calculator.get_balances_savings()
-    table = format_tables(calculator, 1)
-    table_m = format_tables(calculator, calculator.freq / 12)
-    table_a = format_tables(calculator, calculator.freq / 1)
+    table = format_tables(calculator, 1, 'savings')
+    table_m = format_tables(calculator, calculator.freq / 12, 'savings')
+    table_a = format_tables(calculator, calculator.freq / 1, 'savings')
 
     return jsonify({
         'reg_dep': reg_dep,
@@ -50,9 +49,9 @@ def calculadora_de_ahorros():
     interests = calculator.get_interests_savings()
     a_interests = aggregate(interests, periods)
     balances = calculator.get_balances_savings()
-    table = format_tables(calculator, 1)
-    table_m = format_tables(calculator, calculator.freq / 12)
-    table_a = format_tables(calculator, calculator.freq / 1)
+    table = format_tables(calculator, 1, 'savings')
+    table_m = format_tables(calculator, calculator.freq / 12, 'savings')
+    table_a = format_tables(calculator, calculator.freq / 1, 'savings')
 
     return jsonify({
         'time_scale': time_scale,
@@ -92,9 +91,9 @@ def tiempo_para_lograr_meta():
     interests = calculator.get_interests_savings()
     a_interests = aggregate(interests, periods)
     balances = calculator.get_balances_savings()
-    table = format_tables(calculator, 1)
-    table_m = format_tables(calculator, calculator.freq / 12)
-    table_a = format_tables(calculator, calculator.freq / 1)
+    table = format_tables(calculator, 1, 'savings')
+    table_m = format_tables(calculator, calculator.freq / 12, 'savings')
+    table_a = format_tables(calculator, calculator.freq / 1, 'savings')
 
     return jsonify({
         'nper': nper,

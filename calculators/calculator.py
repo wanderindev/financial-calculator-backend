@@ -28,12 +28,33 @@ class Calculator:
         self.dep_when = self.get_int(kwargs.get('dep_when', 0))
         self.time_scale, rows_per_page = self.get_time_scale(self.freq)
         self.fin_bal = self.get_float(kwargs.get('fin_bal', 0))
+        self.loan = self.get_float(kwargs.get('loan', 0))
+        self.reg_pmt = self.get_float(kwargs.get('reg_pmt', 0))
+        self.extra_pmt = self.get_float(kwargs.get('extra_pmt', 0))
+        self.extra_pmt_start = self.get_int(kwargs.get('extra_pmt_start', 0))
+        self.extra_pmt_f = self.get_int(kwargs.get('extra_pmt_f', 0))
+        self.pmt_when = self.get_int(kwargs.get('pmt_when', 0))
         self.periods = self.get_periods()
         self.periods_a = self.get_periods_a()
         self.periods_m = self.get_periods_m()
         self.deposits = []
         self.interests = []
         self.balances = []
+        self.payments = []
+        self.payments_e = []
+        self.payments_r = []
+        self.payments_p = []
+
+    def get_balances_loans(self):
+        balances = []
+
+        for x in self.periods:
+            balances.append(self.loan - sum(self.payments[:x]) +
+                            sum(self.interests[:x]))
+
+        self.balances = balances
+
+        return self.balances
 
     def get_balances_savings(self):
         balances = []
@@ -82,6 +103,25 @@ class Calculator:
     def get_int(val):
         return int(str(val).replace(',', ''))
 
+    def get_interests_loans(self):
+        _rate = self.rate / (100 * self.freq)
+        interests = [round((self.loan - self.payments[0]) * _rate
+                           if self.pmt_when else self.loan * _rate, 2)]
+
+        for x in self.periods[1:]:
+            if self.pmt_when:
+                interest = round((self.loan - sum(self.payments[:x]) +
+                                  sum(interests[:x])) * _rate, 2)
+            else:
+                interest = round((self.loan - sum(self.payments[:x-1]) +
+                                  sum(interests[:x])) * _rate, 2)
+
+            interests.append(interest)
+
+        self.interests = interests
+
+        return self.interests
+
     def get_interests_savings(self):
         _rate = self.rate / (100 * self.freq)
         interests = [round(self.deposits[0] * _rate
@@ -115,6 +155,32 @@ class Calculator:
 
         return _nper
 
+    def get_payments(self):
+        self.payments_r = self.get_payments_r()
+        self.payments_e = self.get_payments_e()
+
+        self.payments = [round(self.payments_r[x-1] + self.payments_e[x-1], 2)
+                         for x in self.periods]
+
+        return self.payments, self.payments_e, self.payments_r
+
+    def get_payments_e(self):
+        extra_pmt_p = []
+
+        if self.extra_dep:
+            extra_pmt_p.append(self.extra_pmt_start)
+            if self.extra_pmt_f:
+                for x in self.periods[self.extra_pmt_start + 1:]:
+                    if not (x - self.extra_pmt_start) \
+                           % (12 / self.extra_pmt_f):
+                        extra_pmt_p.append(x)
+
+        return [self.extra_pmt if x in extra_pmt_p else 0
+                for x in self.periods]
+
+    def get_payments_r(self):
+        return [self.reg_pmt for _ in self.periods]
+
     def get_periods(self):
         return [x + 1 for x in range(ceil(self.freq * self.num_of_years))]
 
@@ -131,6 +197,13 @@ class Calculator:
                   self.fin_bal,
                   self.dep_when)
 
+    def get_rate_savings(self):
+        return rate(self.freq * self.num_of_years,
+                    -self.reg_dep,
+                    -self.ini_dep,
+                    self.fin_bal,
+                    self.dep_when) * self.freq * 100
+
     def get_reg_dep_savings(self):
         _fv = fv(self.rate / (100 * self.freq),
                  self.freq * self.num_of_years,
@@ -146,12 +219,13 @@ class Calculator:
 
         return self.reg_dep
 
-    def get_rate_savings(self):
-        return rate(self.freq * self.num_of_years,
-                    -self.reg_dep,
-                    -self.ini_dep,
-                    self.fin_bal,
-                    self.dep_when) * self.freq * 100
+    def get_reg_pmt(self):
+        self.reg_pmt = round(-pmt(self.rate / (100 * self.freq),
+                                  self.freq * self.num_of_years,
+                                  self.loan,
+                                  when=self.pmt_when), 2)
+
+        return self.reg_pmt
 
     def get_time_scale(self, freq):
         for item in self.freq_items:

@@ -1,5 +1,6 @@
 import os
 
+HEADERS = {'Content-Type': 'application/json'}
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'TmsDxTm53ViWecv9k6sCNuwS'
