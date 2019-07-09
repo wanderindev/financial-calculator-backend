@@ -10,7 +10,7 @@ from .utils import aggregate, format_tables
 def ahorros_para_lograr_meta():
     calculator = Calculator(**request.get_json())
 
-    reg_dep = calculator.get_reg_dep_savings()
+    reg_dep = calculator.get_reg_dep()
     time_scale = calculator.time_scale
     periods = calculator.periods
     deposits = calculator.get_deposits()
