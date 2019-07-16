@@ -27,7 +27,7 @@ def format_tables(calculator, ff, _type):
 
     if ff > 0 and _type is 'retirements':
         return [dict(p='{:0,.0f}'.format(calculator.periods[x-1]),
-                     d='{:0,.2f}'.format(sum(calculator.withdrawals[x-ff:x])),
+                     w='{:0,.2f}'.format(sum(calculator.withdrawals[x-ff:x])),
                      i='{:0,.2f}'.format(sum(calculator.interests[x-ff:x])),
                      b='{:0,.2f}'.format(calculator.balances[x-1]))
                 for x in calculator.periods if x % ff == 0]

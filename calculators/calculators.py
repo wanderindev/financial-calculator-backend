@@ -11,3 +11,4 @@ from .savings import valor_actual
 from .loans import calculadora_de_prestamos
 from .loans import tasa_de_interes_real
 from .retirements import fondo_para_retiros
+from .retirements import duracion_de_fondos

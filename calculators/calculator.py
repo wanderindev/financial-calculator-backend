@@ -64,16 +64,6 @@ class Calculator:
 
         return balances
 
-    def get_balances_savings(self):
-        balances = []
-
-        for x in self.periods:
-            balances.append(sum(self.deposits[:x]) + sum(self.interests[:x]))
-
-        self.balances = balances
-
-        return self.balances
-
     def get_balances_retirements(self):
         balances = []
 
@@ -90,6 +80,16 @@ class Calculator:
         self.balances = balances
 
         return balances
+
+    def get_balances_savings(self):
+        balances = []
+
+        for x in self.periods:
+            balances.append(sum(self.deposits[:x]) + sum(self.interests[:x]))
+
+        self.balances = balances
+
+        return self.balances
 
     def get_deposits(self):
         reg_deps = self.get_deposits_r()
@@ -145,6 +145,26 @@ class Calculator:
 
         return interests
 
+    def get_interests_retirements(self):
+        _rate = self.rate / (100 * self.freq)
+        interests = [round((self.ret_fund - self.withdrawals[0]) * _rate
+                           if self.wdr_when else self.ret_fund * _rate, 2)]
+
+        for x in self.periods[1:]:
+            if self.wdr_when:
+                interest = round((self.ret_fund - sum(self.withdrawals[:x]) +
+                                  sum(interests[:x])) * _rate, 2)
+            else:
+                interest = round(
+                    (self.ret_fund - sum(self.withdrawals[:x - 1]) +
+                     sum(interests[:x])) * _rate, 2)
+
+            interests.append(interest)
+
+        self.interests = interests
+
+        return interests
+
     def get_interests_savings(self):
         _rate = self.rate / (100 * self.freq)
         interests = [round(self.deposits[0] * _rate
@@ -164,30 +184,24 @@ class Calculator:
 
         return self.interests
 
-    def get_interests_retirements(self):
-        _rate = self.rate / (100 * self.freq)
-        interests = [round((self.ret_fund - self.withdrawals[0]) * _rate
-                           if self.wdr_when else self.ret_fund * _rate, 2)]
-
-        for x in self.periods[1:]:
-            if self.wdr_when:
-                interest = round((self.ret_fund - sum(self.withdrawals[:x]) +
-                                  sum(interests[:x])) * _rate, 2)
-            else:
-                interest = round((self.ret_fund - sum(self.withdrawals[:x-1]) +
-                                  sum(interests[:x])) * _rate, 2)
-
-            interests.append(interest)
-
-        self.interests = interests
-
-        return interests
-
     def get_nper_loans(self):
         _nper = ceil(nper(self.rate / (100 * self.freq),
                           -self.reg_pmt,
                           self.loan,
                           when=self.pmt_when))
+
+        self.num_of_years = round(_nper / self.freq, 2)
+        self.periods = self.get_periods()
+        self.periods_a = self.get_periods_a()
+        self.periods_m = self.get_periods_m()
+
+        return _nper
+
+    def get_nper_retirements(self):
+        _nper = ceil(nper(self.rate / (100 * self.freq),
+                          -self.reg_wdr,
+                          self.ret_fund,
+                          when=self.wdr_when))
 
         self.num_of_years = round(_nper / self.freq, 2)
         self.periods = self.get_periods()

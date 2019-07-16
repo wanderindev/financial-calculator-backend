@@ -10,26 +10,27 @@ from .utils import aggregate, format_tables
 def duracion_de_fondos():
     calculator = Calculator(**request.get_json())
 
-    nper = calculator.get_nper_loans()
+    nper = calculator.get_nper_retirements()
+    ret_fund = calculator.ret_fund
     time_scale = calculator.time_scale
     periods = calculator.get_periods()
-    payments, payments_r, payments_e = calculator.get_payments()
-    a_payments = aggregate(payments, periods)
-    interests = calculator.interests
+    withdrawals = calculator.get_withdrawals()
+    a_withdrawals = aggregate(withdrawals, periods)
+    interests = calculator.get_interests_retirements()
     a_interests = aggregate(interests, periods)
-    balances = calculator.balances
-    table = format_tables(calculator, 1, 'loans')
-    table_m = format_tables(calculator, calculator.freq / 12, 'loans')
-    table_a = format_tables(calculator, calculator.freq / 1, 'loans')
+    balances = calculator.get_balances_retirements()
+    table = format_tables(calculator, 1, 'retirements')
+    table_m = format_tables(calculator, calculator.freq / 12, 'retirements')
+    table_a = format_tables(calculator, calculator.freq / 1, 'retirements')
 
     return jsonify({
         'nper': nper,
         'time_scale': time_scale,
-        'total_pmt': sum(payments),
+        'total_wdr': sum(withdrawals),
         'total_int': sum(interests),
-        'total_prin': calculator.loan,
+        'ret_fund': ret_fund,
         'periods': periods,
-        'a_payments': a_payments,
+        'a_withdrawals': a_withdrawals,
         'a_interests': a_interests,
         'balances': balances,
         'table': table,
