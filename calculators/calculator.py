@@ -309,10 +309,10 @@ class Calculator:
     def get_reg_wdr(self):
         self.reg_wdr = round(-pmt(self.rate / (100 * self.freq),
                                   self.freq * self.num_of_years,
-                                  self.loan,
-                                  when=self.pmt_when), 2)
+                                  self.ret_fund,
+                                  when=self.wdr_when), 2)
 
-        return self.reg_pmt
+        return self.reg_wdr
 
     def get_ret_fund(self):
         self.ret_fund = -round(pv(self.rate / (100 * self.freq),

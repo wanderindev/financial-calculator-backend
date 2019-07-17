@@ -74,8 +74,30 @@ def fondo_para_retiros():
 def retiros_para_agotar_fondos():
     calculator = Calculator(**request.get_json())
 
-    rate = calculator.get_rate_loans()
+    time_scale = calculator.time_scale
+    reg_wdr = calculator.get_reg_wdr()
+    ret_fund = calculator.ret_fund
+    periods = calculator.periods
+    withdrawals = calculator.get_withdrawals()
+    a_withdrawals = aggregate(withdrawals, periods)
+    interests = calculator.get_interests_retirements()
+    a_interests = aggregate(interests, periods)
+    balances = calculator.get_balances_retirements()
+    table = format_tables(calculator, 1, 'retirements')
+    table_m = format_tables(calculator, calculator.freq / 12, 'retirements')
+    table_a = format_tables(calculator, calculator.freq / 1, 'retirements')
 
     return jsonify({
-        'rate': rate
+        'time_scale': time_scale,
+        'total_wdr': sum(withdrawals),
+        'total_int': sum(interests),
+        'ret_fund': ret_fund,
+        'reg_wdr': reg_wdr,
+        'periods': periods,
+        'a_withdrawals': a_withdrawals,
+        'a_interests': a_interests,
+        'balances': balances,
+        'table': table,
+        'table_m': table_m,
+        'table_a': table_a
     }), 200, HEADERS
