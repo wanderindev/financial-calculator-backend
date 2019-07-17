@@ -38,8 +38,8 @@ def calculadora_de_prestamos():
     }), 200, HEADERS
 
 
-@calculators.route('/tasa-de-interes-real', methods=['POST'])
-def tasa_de_interes_real():
+@calculators.route('/tasa-de-interes-real-p', methods=['POST'])
+def tasa_de_interes_real_p():
     calculator = Calculator(**request.get_json())
 
     rate = calculator.get_rate_loans()

@@ -34,9 +34,11 @@ class Calculator:
         self.extra_pmt_start = self.get_int(kwargs.get('extra_pmt_start', 0))
         self.extra_pmt_f = self.get_int(kwargs.get('extra_pmt_f', 0))
         self.pmt_when = self.get_int(kwargs.get('pmt_when', 0))
-        self.ret_fund = self.get_int(kwargs.get('ret_fund', 0))
-        self.reg_wdr = self.get_int(kwargs.get('reg_wdr', 0))
+        self.ret_fund = self.get_float(kwargs.get('ret_fund', 0))
+        self.reg_wdr = self.get_float(kwargs.get('reg_wdr', 0))
         self.wdr_when = self.get_int(kwargs.get('wdr_when', 0))
+        self.cc_debt = self.get_float(kwargs.get('cc_debt', 0))
+        self.add_c = self.get_float(kwargs.get('add_c', 0))
         self.periods = self.get_periods()
         self.periods_a = self.get_periods_a()
         self.periods_m = self.get_periods_m()
@@ -276,6 +278,9 @@ class Calculator:
                     0,
                     self.pmt_when) * self.freq * 100
 
+    def get_rate_cc(self):
+        return self.rate + self.add_c * 1200 / self.cc_debt
+
     def get_rate_savings(self):
         return rate(self.freq * self.num_of_years,
                     -self.reg_dep,
@@ -323,8 +328,9 @@ class Calculator:
         return self.ret_fund
 
     def get_time_scale(self, freq):
+        f = freq if freq else 12
         for item in self.freq_items:
-            if item[1] == freq:
+            if item[1] == f:
                 return item[0], item[2]
 
     def get_withdrawals(self):
