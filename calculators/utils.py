@@ -5,6 +5,16 @@ def aggregate(_list, periods):
 def format_tables(calculator, ff, _type):
     ff = int(ff)
 
+    if ff > 0 and _type is 'cc':
+        return [dict(p='{:0,.0f}'.format(calculator.periods[x-1]),
+                     pt='{:0,.2f}'.format(
+                         sum(calculator.payments[x - ff:x])),
+                     pp='{:0,.2f}'.format(
+                         sum(calculator.payments_p[x - ff:x])),
+                     pi='{:0,.2f}'.format(sum(calculator.interests[x - ff:x])),
+                     b='{:0,.2f}'.format(calculator.balances[x-1]))
+                for x in calculator.periods if x % ff == 0]
+
     if ff > 0 and _type is 'savings':
         return [dict(p='{:0,.0f}'.format(calculator.periods[x-1]),
                      d='{:0,.2f}'.format(sum(calculator.deposits[x-ff:x])),
