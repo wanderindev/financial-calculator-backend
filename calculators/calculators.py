@@ -1,7 +1,8 @@
 from flask import Blueprint
+from flask_cors import CORS
 
 calculators = Blueprint('calculators', __name__)
-
+CORS(calculators)
 
 from .savings import ahorros_para_lograr_meta
 from .savings import calculadora_de_ahorros
