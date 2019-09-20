@@ -29,9 +29,9 @@ def format_tables(calculator, ff, _type):
                          sum(calculator.payments_r[x - ff:x])),
                      pi='{:0,.2f}'.format(sum(calculator.interests[x-ff:x])),
                      pc='{:0,.2f}'.format(
-                         calculator.loan -
-                         sum(calculator.payments[x - ff:x]) +
-                         sum(calculator.interests[x-ff:x])),
+                         calculator.payments_e[x-1] +
+                         calculator.payments_r[x-1] -
+                         calculator.interests[x-1]),
                      b='{:0,.2f}'.format(calculator.balances[x-1]))
                 for x in calculator.periods if x % ff == 0]
 

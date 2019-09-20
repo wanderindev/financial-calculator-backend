@@ -27,7 +27,7 @@ def ahorros_para_lograr_meta():
         'time_scale': time_scale,
         'total_dep': sum(deposits),
         'total_int': sum(interests),
-        'fin_bal': balances[-1],
+        'fin_bal_r': balances[-1],
         'periods': periods,
         'a_deposits': a_deposits,
         'a_interests': a_interests,
@@ -84,6 +84,7 @@ def tiempo_para_lograr_meta():
     calculator = Calculator(**request.get_json())
 
     nper = calculator.get_nper_savings()
+    num_of_years = calculator.num_of_years
     time_scale = calculator.time_scale
     periods = calculator.get_periods()
     deposits = calculator.get_deposits()
@@ -97,13 +98,14 @@ def tiempo_para_lograr_meta():
 
     return jsonify({
         'nper': nper,
+        'num_of_years': num_of_years,
         'time_scale': time_scale,
         'total_dep': sum(deposits),
         'total_int': sum(interests),
-        'fin_bal': balances[-1],
+        'fin_bal_r': balances[-1],
         'periods': periods,
-        'agg_deposits': a_deposits,
-        'agg_interests': a_interests,
+        'a_deposits': a_deposits,
+        'a_interests': a_interests,
         'balances': balances,
         'table': table,
         'table_m': table_m,
