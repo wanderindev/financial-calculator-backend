@@ -11,6 +11,7 @@ def duracion_de_fondos():
     calculator = Calculator(**request.get_json())
 
     nper = calculator.get_nper_retirements()
+    num_of_years = calculator.num_of_years
     ret_fund = calculator.ret_fund
     time_scale = calculator.time_scale
     periods = calculator.get_periods()
@@ -25,6 +26,7 @@ def duracion_de_fondos():
 
     return jsonify({
         'nper': nper,
+        'num_of_years': num_of_years,
         'time_scale': time_scale,
         'total_wdr': sum(withdrawals),
         'total_int': sum(interests),

@@ -43,12 +43,12 @@ def tarjeta_de_credito():
     }), 200, HEADERS
 
 
-@calculators.route('/tasa-de-interes-real-tc', methods=['POST'])
+@calculators.route('/tasa-de-interes-real-de-tarjeta', methods=['POST'])
 def tasa_de_interes_real_tc():
     calculator = Calculator(**request.get_json())
 
     rate = calculator.get_rate_cc()
 
     return jsonify({
-        'rate': rate
+        'r_rate': rate
     }), 200, HEADERS

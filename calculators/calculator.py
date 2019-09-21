@@ -19,7 +19,7 @@ class Calculator:
     def __init__(self, **kwargs):
         self.ini_dep = self.get_float(kwargs.get('ini_dep', 0))
         self.reg_dep = self.get_float(kwargs.get('reg_dep', 0))
-        self.freq = self.get_int(kwargs.get('freq', 0))
+        self.freq = self.get_int(kwargs.get('freq', 12))
         self.num_of_years = self.get_float(kwargs.get('num_of_years', 0))
         self.rate = self.get_float(kwargs.get('rate', 0))
         self.extra_dep = self.get_float(kwargs.get('extra_dep', 0))
@@ -45,6 +45,8 @@ class Calculator:
         self.periods = self.get_periods()
         self.periods_a = self.get_periods_a()
         self.periods_m = self.get_periods_m()
+        self.num_of_years_t = self.num_of_years
+        self.nper_t = 0
         self.deposits = []
         self.interests = []
         self.balances = []
@@ -60,9 +62,13 @@ class Calculator:
         for x in self.periods:
             bal = self.loan - sum(self.payments[:x]) + sum(self.interests[:x])
             if bal < 0:
-                self.payments_r[-1] = self.reg_pmt + bal
-                self.payments[-1] = self.payments_r[-1] + self.payments_e[-1]
+                self.payments_r[x-1] = self.reg_pmt + bal
+                self.payments[x-1] = self.payments_r[x-1] + \
+                    self.payments_e[x-1]
                 balances.append(0)
+                self.trunc_periods(x)
+
+                return balances
             else:
                 balances.append(self.loan - sum(self.payments[:x]) +
                                 sum(self.interests[:x]))
@@ -168,7 +174,7 @@ class Calculator:
                 interest = round((self.loan - sum(self.payments[:x]) +
                                   sum(interests[:x])) * _rate, 2)
             else:
-                interest = round((self.loan - sum(self.payments[:x-1]) +
+                interest = round((self.loan - sum(self.payments[:x - 1]) +
                                   sum(interests[:x])) * _rate, 2)
 
             interests.append(interest)
@@ -269,7 +275,7 @@ class Calculator:
     def get_payments_e(self):
         extra_pmt_p = []
 
-        if self.extra_dep:
+        if self.extra_pmt:
             extra_pmt_p.append(self.extra_pmt_start)
             if self.extra_pmt_f:
                 for x in self.periods[self.extra_pmt_start + 1:]:
@@ -365,3 +371,12 @@ class Calculator:
         self.withdrawals = [self.reg_wdr for _ in self.periods]
 
         return self.withdrawals
+
+    def trunc_periods(self, p):
+        self.periods = self.periods[:p]
+        self.payments_r = self.payments_r[:p]
+        self.payments_e = self.payments_e[:p]
+        self.payments = self.payments[:p]
+        self.interests = self.interests[:p]
+        self.nper_t = p
+        self.num_of_years_t = p / self.freq
