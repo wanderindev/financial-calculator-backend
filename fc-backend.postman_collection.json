@@ -1,0 +1,373 @@
+{
+	"info": {
+		"_postman_id": "44d79b6c-4aed-411c-ad77-eee621956dfa",
+		"name": "financial-calculator-backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{url}}/calculadora-de-ahorros",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ini_dep\": 40000,\n\t\"reg_dep\": 500.00,\n\t\"freq\": 12,\n\t\"num_of_years\": 20,\n\t\"rate\": 7,\n\t\"extra_dep\": 0,\n\t\"extra_dep_start\": 0,\n\t\"extra_dep_f\": 0,\n\t\"dep_when\":0\n}"
+				},
+				"url": {
+					"raw": "{{url}}/calculadora-de-ahorros",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"calculadora-de-ahorros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/ahorros-para-lograr-meta",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ini_dep\": 500,\n\t\"fin_bal\": 10000,\n\t\"freq\": 12,\n\t\"num_of_years\": 3,\n\t\"rate\": 5,\n\t\"dep_when\": 0\n}"
+				},
+				"url": {
+					"raw": "{{url}}/ahorros-para-lograr-meta",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ahorros-para-lograr-meta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/tiempo-para-lograr-meta",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ini_dep\": 20000,\n\t\"reg_dep\": 400.00,\n\t\"freq\": 12,\n\t\"rate\": 5,\n\t\"fin_bal\": 350000,\n\t\"dep_when\": 1\n}"
+				},
+				"url": {
+					"raw": "{{url}}/tiempo-para-lograr-meta",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tiempo-para-lograr-meta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/tasa-de-interes-requerida",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ini_dep\": 1000,\n\t\"reg_dep\": 0,\n\t\"freq\": 1,\n\t\"num_of_years\": 1,\n\t\"fin_bal\": 1050,\n\t\"dep_when\": 0\n}"
+				},
+				"url": {
+					"raw": "{{url}}/tasa-de-interes-requerida",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tasa-de-interes-requerida"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/valor-actual",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"freq\": 1,\n\t\"num_of_years\": 20,\n\t\"rate\": 5,\n\t\"fin_bal\": 1000,\n\t\"dep_when\": 0\n}"
+				},
+				"url": {
+					"raw": "{{url}}/valor-actual",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"valor-actual"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/calculadora-de-prestamos",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"loan\": 100000,\n\t\"num_of_years\": 25,\n\t\"rate\": 9,\n\t\"freq\": 12,\n\t\"extra_pmt\": 0,\n\t\"extra_pmt_start\": 0,\n\t\"extra_pmt_f\": 0,\n\t\"pmt_when\": 0\n}"
+				},
+				"url": {
+					"raw": "{{url}}/calculadora-de-prestamos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"calculadora-de-prestamos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/tasa-de-interes-real-p",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"loan\": 25000,\n\t\"num_of_years\": 8,\n\t\"reg_pmt\": 400,\n\t\"freq\": 12,\n\t\"pmt_when\": 0\n}"
+				},
+				"url": {
+					"raw": "{{url}}/tasa-de-interes-real-p",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tasa-de-interes-real-p"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/tiempo-para-pagar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"loan\": 15000,\n\t\"rate\": 7,\n\t\"reg_pmt\": 301,\n\t\"freq\": 12,\n\t\"pmt_when\": 0\n}"
+				},
+				"url": {
+					"raw": "{{url}}/tiempo-para-pagar",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tiempo-para-pagar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/fondo-para-retiros",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"reg_wdr\": 2000,\n\t\"num_of_years\": 25,\n\t\"freq\": 12,\n\t\"rate\": 5,\n\t\"wdr_when\": 1\n}"
+				},
+				"url": {
+					"raw": "{{url}}/fondo-para-retiros",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"fondo-para-retiros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/duracion-de-fondos",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ret_fund\": 300000,\n\t\"reg_wdr\": 2500,\n\t\"freq\": 12,\n\t\"rate\": 7,\n\t\"wdr_when\": 0\n}"
+				},
+				"url": {
+					"raw": "{{url}}/duracion-de-fondos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"duracion-de-fondos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/retiros-para-agotar-fondos",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ret_fund\": 400000,\n\t\"num_of_years\": 1,\n\t\"freq\": 12,\n\t\"rate\": 4,\n\t\"wdr_when\": 1\n}"
+				},
+				"url": {
+					"raw": "{{url}}/retiros-para-agotar-fondos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"retiros-para-agotar-fondos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/tasa-de-interes-real-tc",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cc_debt\": 2200,\n\t\"rate\": 19,\n\t\"min_p_perc\": 3,\n\t\"min_p\": 25,\n\t\"add_c\": 15.22\n}"
+				},
+				"url": {
+					"raw": "{{url}}/tasa-de-interes-real-tc",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tasa-de-interes-real-tc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/tarjeta-pago-minimo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cc_debt\": 5500,\n\t\"rate\": 18,\n\t\"freq\": 12,\n\t\"min_p_perc\": 3,\n\t\"min_p\": 25\n}"
+				},
+				"url": {
+					"raw": "{{url}}/tarjeta-pago-minimo",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tarjeta-pago-minimo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/tarjeta-pago-fijo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cc_debt\": 5500,\n\t\"freq\": 12,\n\t\"rate\": 18,\n\t\"min_p_perc\": 3,\n\t\"min_p\": 25,\n\t\"fix_p\": 200\n}"
+				},
+				"url": {
+					"raw": "{{url}}/tarjeta-pago-fijo",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"tarjeta-pago-fijo"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
