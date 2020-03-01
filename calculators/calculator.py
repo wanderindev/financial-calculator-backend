@@ -116,10 +116,11 @@ class Calculator:
 
         if self.extra_dep:
             extra_dep_p.append(self.extra_dep_start)
+
             if self.extra_dep_f:
-                for x in self.periods[self.extra_dep_start + 1:]:
+                for x in self.periods[self.extra_dep_start:]:
                     if not (x - self.extra_dep_start) \
-                           % (12 / self.extra_dep_f):
+                           % (self.freq / self.extra_dep_f):
                         extra_dep_p.append(x)
 
         return [self.extra_dep if x in extra_dep_p else 0
