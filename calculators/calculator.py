@@ -151,6 +151,7 @@ class Calculator:
         while b > 0:
             i = b * _rate
             p = max(b * _min_p_perc, _min_p, _fix_p)
+
             if b + i < p:
                 p = b + i
 
@@ -189,8 +190,14 @@ class Calculator:
 
         for x in self.periods[1:]:
             if self.wdr_when:
-                interest = round((self.ret_fund - sum(self.withdrawals[:x]) +
-                                  sum(interests[:x])) * _rate, 2)
+                cur_bal = round((self.ret_fund - sum(self.withdrawals[:x]) +
+                                 sum(interests[:x])), 2)
+
+                if cur_bal < 0:
+                    interest = 0
+                    self.withdrawals[x-1] = self.withdrawals[x-1] + cur_bal
+                else:
+                    interest = round(cur_bal * _rate, 2)
             else:
                 interest = round(
                     (self.ret_fund - sum(self.withdrawals[:x - 1]) +
@@ -279,7 +286,7 @@ class Calculator:
         if self.extra_pmt:
             extra_pmt_p.append(self.extra_pmt_start)
             if self.extra_pmt_f:
-                for x in self.periods[self.extra_pmt_start + 1:]:
+                for x in self.periods[self.extra_pmt_start:]:
                     if not (x - self.extra_pmt_start) \
                            % (12 / self.extra_pmt_f):
                         extra_pmt_p.append(x)
@@ -314,7 +321,7 @@ class Calculator:
                     self.pmt_when) * self.freq * 100
 
     def get_rate_cc(self):
-        return self.rate + self.add_c * 1200 / self.cc_debt
+        return self.add_c * 1200 / self.cc_debt
 
     def get_rate_savings(self):
         return rate(self.freq * self.num_of_years,
