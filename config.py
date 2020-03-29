@@ -1,11 +1,12 @@
 import os
 
-HEADERS = {'Content-Type': 'application/json'}
+HEADERS = {"Content-Type": "application/json"}
+
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'TmsDxTm53ViWecv9k6sCNuwS'
-    TESTING = os.environ.get('TESTING') or False
-    DEBUG = os.environ.get('DEBUG') or True
+    SECRET_KEY = os.environ.get("SECRET_KEY") or "TmsDxTm53ViWecv9k6sCNuwS"
+    TESTING = os.environ.get("TESTING") or False
+    DEBUG = os.environ.get("DEBUG") or True
 
     @staticmethod
     def init_app(app):
@@ -28,7 +29,7 @@ class ProductionConfig(Config):
 
 
 config = {
-    'development': DevelopmentConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig
+    "development": DevelopmentConfig,
+    "testing": TestingConfig,
+    "production": ProductionConfig,
 }

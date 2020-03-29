@@ -15,6 +15,7 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     from calculators.calculators import calculators
+
     app.register_blueprint(calculators)
 
     return app
