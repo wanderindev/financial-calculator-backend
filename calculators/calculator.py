@@ -185,7 +185,7 @@ class Calculator:
                 (self.loan - self.payments[0]) * _rate
                 if self.pmt_when
                 else self.loan * _rate,
-                2,
+                4,
             )
         ]
 
@@ -194,7 +194,7 @@ class Calculator:
                 interest = round(
                     (self.loan - sum(self.payments[:x]) + sum(interests[:x]))
                     * _rate,
-                    2,
+                    4,
                 )
             else:
                 interest = round(
@@ -204,7 +204,7 @@ class Calculator:
                         + sum(interests[:x])
                     )
                     * _rate,
-                    2,
+                    4,
                 )
 
             interests.append(interest)
@@ -341,7 +341,7 @@ class Calculator:
         self.payments_e = self.get_payments_e()
 
         self.payments = [
-            round(self.payments_r[x - 1] + self.payments_e[x - 1], 2)
+            round(self.payments_r[x - 1] + self.payments_e[x - 1], 4)
             for x in self.periods
         ]
 
@@ -446,7 +446,7 @@ class Calculator:
                 self.loan,
                 when=self.pmt_when,
             ),
-            2,
+            4,
         )
 
         return self.reg_pmt

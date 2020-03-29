@@ -12,12 +12,15 @@ def calculadora_de_prestamos():
 
     time_scale = calculator.time_scale
     reg_pmt = calculator.get_reg_pmt()
-    payments, payments_r, payments_e = calculator.get_payments()
+    calculator.get_payments()
     periods = calculator.periods
-    a_payments = aggregate(payments, periods)
     interests = calculator.interests
     a_interests = aggregate(interests, periods)
     balances = calculator.balances
+    payments = calculator.payments
+    payments_e = calculator.payments_e
+    payments_r = calculator.payments_r
+    a_payments = aggregate(payments, periods)
     num_of_years = calculator.num_of_years
     num_of_years_t = calculator.num_of_years_t
     nper = num_of_years * calculator.freq
