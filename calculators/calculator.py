@@ -83,7 +83,6 @@ class Calculator:
                   sum(self.interests[:x])
 
             if bal < 0:
-                self.withdrawals[-1] = self.reg_wdr + bal
                 balances.append(0)
             else:
                 balances.append(self.ret_fund - sum(self.withdrawals[:x]) +
@@ -199,9 +198,12 @@ class Calculator:
                 else:
                     interest = round(cur_bal * _rate, 2)
             else:
-                interest = round(
-                    (self.ret_fund - sum(self.withdrawals[:x - 1]) +
-                     sum(interests[:x])) * _rate, 2)
+                cur_bal = (self.ret_fund - sum(self.withdrawals[:x-1]) +
+                           sum(interests[:x]))
+                interest = round(cur_bal * _rate, 2)
+
+                if cur_bal + interest < self.withdrawals[x-1]:
+                    self.withdrawals[x-1] = cur_bal + interest
 
             interests.append(interest)
 
@@ -321,7 +323,7 @@ class Calculator:
                     self.pmt_when) * self.freq * 100
 
     def get_rate_cc(self):
-        return self.add_c * 1200 / self.cc_debt
+        return self.rate + self.add_c * 1200 / self.cc_debt
 
     def get_rate_savings(self):
         return rate(self.freq * self.num_of_years,

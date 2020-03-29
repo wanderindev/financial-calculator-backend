@@ -15,9 +15,10 @@ def duracion_de_fondos():
     ret_fund = calculator.ret_fund
     time_scale = calculator.time_scale
     periods = calculator.get_periods()
-    withdrawals = calculator.get_withdrawals()
-    a_withdrawals = aggregate(withdrawals, periods)
+    calculator.get_withdrawals()
     interests = calculator.get_interests_retirements()
+    withdrawals = calculator.withdrawals
+    a_withdrawals = aggregate(withdrawals, periods)
     a_interests = aggregate(interests, periods)
     balances = calculator.get_balances_retirements()
     table = format_tables(calculator, 1, 'retirements')
@@ -48,9 +49,10 @@ def fondo_para_retiros():
     time_scale = calculator.time_scale
     ret_fund = calculator.get_ret_fund()
     periods = calculator.periods
-    withdrawals = calculator.get_withdrawals()
-    a_withdrawals = aggregate(withdrawals, periods)
+    calculator.get_withdrawals()
     interests = calculator.get_interests_retirements()
+    withdrawals = calculator.withdrawals
+    a_withdrawals = aggregate(withdrawals, periods)
     a_interests = aggregate(interests, periods)
     balances = calculator.get_balances_retirements()
     table = format_tables(calculator, 1, 'retirements')
@@ -80,9 +82,10 @@ def retiros_para_agotar_fondos():
     reg_wdr = calculator.get_reg_wdr()
     ret_fund = calculator.ret_fund
     periods = calculator.periods
-    withdrawals = calculator.get_withdrawals()
-    a_withdrawals = aggregate(withdrawals, periods)
+    calculator.get_withdrawals()
     interests = calculator.get_interests_retirements()
+    withdrawals = calculator.withdrawals
+    a_withdrawals = aggregate(withdrawals, periods)
     a_interests = aggregate(interests, periods)
     balances = calculator.get_balances_retirements()
     table = format_tables(calculator, 1, 'retirements')
