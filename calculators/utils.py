@@ -38,9 +38,9 @@ def format_tables(calculator, ff, _type):
                 pr="{:0,.2f}".format(sum(calculator.payments_r[x - ff : x])),
                 pi="{:0,.2f}".format(sum(calculator.interests[x - ff : x])),
                 pc="{:0,.2f}".format(
-                    calculator.payments_e[x - 1]
-                    + calculator.payments_r[x - 1]
-                    - calculator.interests[x - 1]
+                    sum(calculator.payments_e[x - ff : x])
+                    + sum(calculator.payments_r[x - ff : x])
+                    - sum(calculator.interests[x - ff : x])
                 ),
                 b="{:0,.2f}".format(calculator.balances[x - 1]),
             )
