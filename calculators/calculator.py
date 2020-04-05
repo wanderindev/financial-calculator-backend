@@ -62,12 +62,21 @@ class Calculator:
         for x in self.periods:
             bal = self.loan - sum(self.payments[:x]) + sum(self.interests[:x])
             if bal < 0:
-                self.payments_r[x - 1] = self.reg_pmt + bal
-                self.payments[x - 1] = (
-                    self.payments_r[x - 1] + self.payments_e[x - 1]
-                )
-                balances.append(0)
-                self.trunc_periods(x)
+                if self.reg_pmt + bal >= 0:
+                    self.payments_r[x - 1] = self.reg_pmt + bal
+                    self.payments[x - 1] = (
+                        self.payments_r[x - 1] + self.payments_e[x - 1]
+                    )
+                    balances.append(0)
+                    self.trunc_periods(x)
+                else:
+                    self.payments_r[x - 1] = 0
+                    self.payments_e[x -1] = bal + self.payments_e[x -1] + self.reg_pmt
+                    self.payments[x - 1] = (
+                            self.payments_e[x - 1]
+                    )
+                    balances.append(0)
+                    self.trunc_periods(x)
 
                 return balances
             else:
