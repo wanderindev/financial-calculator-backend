@@ -216,7 +216,10 @@ class Calculator:
                     4,
                 )
 
-            interests.append(interest)
+            if interest < 0:
+                interests.append(0)
+            else:
+                interests.append(interest)
 
         return interests
 
