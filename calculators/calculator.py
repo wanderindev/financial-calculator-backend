@@ -13,7 +13,7 @@ class Calculator:
         ("Quincena", 24, 12),
         ("Bi-semana", 26, 13),
         ("Semana", 52, 13),
-        (u"Día", 364, 15),
+        (u"Día", 365, 15),
     ]
 
     def __init__(self, **kwargs):
