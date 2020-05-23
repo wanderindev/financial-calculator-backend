@@ -28,6 +28,14 @@ COPY uwsgi.ini /etc/uwsgi/
 COPY supervisord.conf /etc/supervisord.conf
 
 ENV INSTALL_PATH /app
+ENV FLASK_CONFIG production
+ENV SECRET_KEY TmsDxTm53ViWecv9k6sCNuwS
+
+ENV DEBUG=False
+ENV TESTING=False
+
+EXPOSE 80
+
 RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH
 
@@ -35,7 +43,5 @@ COPY app.py .
 COPY config.py .
 COPY run.py .
 COPY /calculators ./calculators
-
-RUN ls
 
 CMD ["/usr/bin/supervisord"]
