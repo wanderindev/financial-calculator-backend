@@ -1,15 +1,15 @@
 from flask import jsonify, request
 
-from .calculator import Calculator
-from .calculators import calculators
+from calculators.credit_card_calculator import CreditCardCalculator
+from resources.calculators import calculators
 from config import HEADERS
-from .utils import aggregate, format_tables
+from resources.utils import aggregate, format_tables
 
 
 @calculators.route("/tarjeta-pago-fijo", methods=["POST"])
 @calculators.route("/tarjeta-pago-minimo", methods=["POST"])
 def tarjeta_de_credito():
-    calculator = Calculator(**request.get_json())
+    calculator = CreditCardCalculator(**request.get_json())
 
     time_scale = calculator.time_scale
     first_p = calculator.get_payment_cc()
@@ -51,7 +51,7 @@ def tarjeta_de_credito():
 
 @calculators.route("/tasa-de-interes-real-de-tarjeta", methods=["POST"])
 def tasa_de_interes_real_tc():
-    calculator = Calculator(**request.get_json())
+    calculator = CreditCardCalculator(**request.get_json())
 
     rate = calculator.get_rate_cc()
 

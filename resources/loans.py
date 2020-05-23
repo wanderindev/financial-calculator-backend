@@ -1,14 +1,14 @@
 from flask import jsonify, request
 
-from .calculator import Calculator
-from .calculators import calculators
+from calculators.loan_calculator import LoanCalculator
+from resources.calculators import calculators
 from config import HEADERS
-from .utils import aggregate, format_tables
+from resources.utils import aggregate, format_tables
 
 
 @calculators.route("/calculadora-de-prestamos", methods=["POST"])
 def calculadora_de_prestamos():
-    calculator = Calculator(**request.get_json())
+    calculator = LoanCalculator(**request.get_json())
 
     time_scale = calculator.time_scale
     reg_pmt = calculator.get_reg_pmt()
@@ -18,8 +18,8 @@ def calculadora_de_prestamos():
     a_interests = aggregate(interests, periods)
     balances = calculator.balances
     payments = calculator.payments
-    payments_e = calculator.payments_e
-    payments_r = calculator.payments_r
+    _ = calculator.payments_e
+    _ = calculator.payments_r
     a_payments = aggregate(payments, periods)
     num_of_years = calculator.num_of_years
     num_of_years_t = calculator.num_of_years_t
@@ -64,7 +64,7 @@ def calculadora_de_prestamos():
 
 @calculators.route("/tasa-de-interes-real-de-prestamo", methods=["POST"])
 def tasa_de_interes_real_p():
-    calculator = Calculator(**request.get_json())
+    calculator = LoanCalculator(**request.get_json())
 
     rate = calculator.get_rate_loans()
 
@@ -73,7 +73,7 @@ def tasa_de_interes_real_p():
 
 @calculators.route("/tiempo-para-cancelar-prestamo", methods=["POST"])
 def tiempo_para_pagar():
-    calculator = Calculator(**request.get_json())
+    calculator = LoanCalculator(**request.get_json())
 
     nper = calculator.get_nper_loans()
     num_of_years = calculator.num_of_years

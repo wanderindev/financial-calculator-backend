@@ -59,5 +59,3 @@ def format_tables(calculator, ff, _type):
             for x in calculator.periods
             if x % ff == 0
         ]
-
-    return None
