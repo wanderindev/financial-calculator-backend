@@ -1,8 +1,8 @@
 from flask import jsonify, request
 
 from calculators.loan_calculator import LoanCalculator
-from resources.calculators import calculators
 from config import HEADERS
+from resources.calculators import calculators
 from resources.utils import aggregate, format_tables
 
 

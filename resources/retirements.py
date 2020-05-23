@@ -1,8 +1,8 @@
 from flask import jsonify, request
 
 from calculators.retirement_calculator import RetirementCalculator
-from resources.calculators import calculators
 from config import HEADERS
+from resources.calculators import calculators
 from resources.utils import aggregate, format_tables
 
 
