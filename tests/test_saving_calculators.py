@@ -26,7 +26,7 @@ from tests.saving_constants import (
 
 
 class TestSavingCalculator(BaseTest):
-    """Test all endpoints for the savings calculator"""
+    """Test all endpoints for the saving calculator"""
 
     def setUp(self):
         super(TestSavingCalculator, self).setUp()
@@ -42,7 +42,7 @@ class TestSavingCalculator(BaseTest):
             results = c.post(
                 "/ahorros-para-lograr-meta",
                 data=json.dumps(AHORROS_PARA_META_JSON_0),
-                headers=TestSavingCalculator.request_headers
+                headers=TestSavingCalculator.request_headers,
             )
             data = json.loads(results.data)
 
@@ -57,7 +57,7 @@ class TestSavingCalculator(BaseTest):
             results = c.post(
                 "/ahorros-para-lograr-meta",
                 data=json.dumps(AHORROS_PARA_META_JSON_1),
-                headers=TestSavingCalculator.request_headers
+                headers=TestSavingCalculator.request_headers,
             )
             data = json.loads(results.data)
 
@@ -72,7 +72,7 @@ class TestSavingCalculator(BaseTest):
             results = c.post(
                 "/calculadora-de-ahorros",
                 data=json.dumps(AHORROS_JSON_0),
-                headers=TestSavingCalculator.request_headers
+                headers=TestSavingCalculator.request_headers,
             )
             data = json.loads(results.data)
 
@@ -87,7 +87,7 @@ class TestSavingCalculator(BaseTest):
             results = c.post(
                 "/calculadora-de-ahorros",
                 data=json.dumps(AHORROS_JSON_1),
-                headers=TestSavingCalculator.request_headers
+                headers=TestSavingCalculator.request_headers,
             )
             data = json.loads(results.data)
 
@@ -102,7 +102,7 @@ class TestSavingCalculator(BaseTest):
             results = c.post(
                 "/tasa-de-interes-requerida",
                 data=json.dumps(INTERES_REQUERIDO_JSON_0),
-                headers=TestSavingCalculator.request_headers
+                headers=TestSavingCalculator.request_headers,
             )
             data = json.loads(results.data)
 
@@ -119,7 +119,7 @@ class TestSavingCalculator(BaseTest):
             results = c.post(
                 "/tasa-de-interes-requerida",
                 data=json.dumps(INTERES_REQUERIDO_JSON_1),
-                headers=TestSavingCalculator.request_headers
+                headers=TestSavingCalculator.request_headers,
             )
             data = json.loads(results.data)
 
@@ -136,7 +136,7 @@ class TestSavingCalculator(BaseTest):
             results = c.post(
                 "/tiempo-para-lograr-meta",
                 data=json.dumps(TIEMPO_PARA_META_JSON_0),
-                headers=TestSavingCalculator.request_headers
+                headers=TestSavingCalculator.request_headers,
             )
             data = json.loads(results.data)
 
@@ -151,7 +151,7 @@ class TestSavingCalculator(BaseTest):
             results = c.post(
                 "/tiempo-para-lograr-meta",
                 data=json.dumps(TIEMPO_PARA_META_JSON_1),
-                headers=TestSavingCalculator.request_headers
+                headers=TestSavingCalculator.request_headers,
             )
             data = json.loads(results.data)
 
@@ -166,7 +166,7 @@ class TestSavingCalculator(BaseTest):
             results = c.post(
                 "/valor-actual",
                 data=json.dumps(VALOR_ACTUAL_JSON_0),
-                headers=TestSavingCalculator.request_headers
+                headers=TestSavingCalculator.request_headers,
             )
             data = json.loads(results.data)
 
@@ -181,7 +181,7 @@ class TestSavingCalculator(BaseTest):
             results = c.post(
                 "/valor-actual",
                 data=json.dumps(VALOR_ACTUAL_JSON_1),
-                headers=TestSavingCalculator.request_headers
+                headers=TestSavingCalculator.request_headers,
             )
             data = json.loads(results.data)
 
