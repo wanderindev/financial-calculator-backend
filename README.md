@@ -1,12 +1,15 @@
 <h1 align="center">Welcome to financial calculator backend 👋</h1>
 <p>
-  <img src="https://img.shields.io/badge/version-0.0.1-blue.svg?cacheSeconds=2592000" />
+  <img src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/wanderindev/financial-calculator-backend/blob/master/README.md">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
   </a>
   <a href="https://github.com/wanderindev/financial-calculator-backend/graphs/commit-activity">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-brightgreen.svg" target="_blank" />
   </a>
+  <a href="https://htmlpreview.github.io/?https://github.com/wanderindev/financial-calculator-backend/blob/master/htmlcov/index.html">
+    <img alt="Coverage" src="https://img.shields.io/badge/coverage-98%25-green.svg" target="_blank" />
+  </a>  
   <a href="https://github.com/wanderindev/financial-calculator-backend/blob/master/LICENSE.md">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" target="_blank" />
   </a>
@@ -15,7 +18,7 @@
   </a>
 </p>
 
-> Python backend for [financial calculator](https://fc-frontend.wanderin.dev)
+> Python backend for [financial calculator](https://calcfina.com)
 
 
 ## Install
