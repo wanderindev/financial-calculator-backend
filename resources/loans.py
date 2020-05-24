@@ -3,11 +3,12 @@ from flask import jsonify, request
 from calculators.loan_calculator import LoanCalculator
 from config import HEADERS
 from resources.calculators import calculators
+from resources.custom_typing import FullResponseJSON, SimpleResponseJSON
 from resources.utils import aggregate, format_tables
 
 
 @calculators.route("/calculadora-de-prestamos", methods=["POST"])
-def calculadora_de_prestamos():
+def calculadora_de_prestamos() -> FullResponseJSON:
     calculator = LoanCalculator(**request.get_json())
 
     time_scale = calculator.time_scale
@@ -63,7 +64,7 @@ def calculadora_de_prestamos():
 
 
 @calculators.route("/tasa-de-interes-real-de-prestamo", methods=["POST"])
-def tasa_de_interes_real_p():
+def tasa_de_interes_real_p() -> SimpleResponseJSON:
     calculator = LoanCalculator(**request.get_json())
 
     rate = calculator.get_rate_loans()
@@ -72,7 +73,7 @@ def tasa_de_interes_real_p():
 
 
 @calculators.route("/tiempo-para-cancelar-prestamo", methods=["POST"])
-def tiempo_para_pagar():
+def tiempo_para_pagar() -> FullResponseJSON:
     calculator = LoanCalculator(**request.get_json())
 
     nper = calculator.get_nper_loans()

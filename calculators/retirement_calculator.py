@@ -1,5 +1,6 @@
 from math import ceil
 from numpy_financial import nper, pmt, pv
+from typing import List
 
 from .calculator import Calculator
 
@@ -14,7 +15,7 @@ class RetirementCalculator(Calculator):
         self.wdr_when = self.get_int(kwargs.get("wdr_when", 0))
         self.withdrawals = []
 
-    def get_balances_retirements(self):
+    def get_balances_retirements(self) -> List[float]:
         balances = []
 
         for x in self.periods:
@@ -36,7 +37,7 @@ class RetirementCalculator(Calculator):
 
         return balances
 
-    def get_interests_retirements(self):
+    def get_interests_retirements(self) -> List[float]:
         _rate = self.rate / (100 * self.freq)
         interests = [
             round(
@@ -80,7 +81,7 @@ class RetirementCalculator(Calculator):
 
         return interests
 
-    def get_nper_retirements(self):
+    def get_nper_retirements(self) -> int:
         _nper = ceil(
             nper(
                 self.rate / (100 * self.freq),
@@ -97,7 +98,7 @@ class RetirementCalculator(Calculator):
 
         return _nper
 
-    def get_reg_wdr(self):
+    def get_reg_wdr(self) -> float:
         self.reg_wdr = round(
             -pmt(
                 self.rate / (100 * self.freq),
@@ -110,7 +111,7 @@ class RetirementCalculator(Calculator):
 
         return self.reg_wdr
 
-    def get_ret_fund(self):
+    def get_ret_fund(self) -> float:
         self.ret_fund = -round(
             pv(
                 self.rate / (100 * self.freq),
@@ -123,7 +124,7 @@ class RetirementCalculator(Calculator):
 
         return self.ret_fund
 
-    def get_withdrawals(self):
+    def get_withdrawals(self) -> List[float]:
         self.withdrawals = [self.reg_wdr for _ in self.periods]
 
         return self.withdrawals

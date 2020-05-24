@@ -3,11 +3,12 @@ from flask import jsonify, request
 from calculators.retirement_calculator import RetirementCalculator
 from config import HEADERS
 from resources.calculators import calculators
+from resources.custom_typing import FullResponseJSON
 from resources.utils import aggregate, format_tables
 
 
 @calculators.route("/duracion-de-fondos", methods=["POST"])
-def duracion_de_fondos():
+def duracion_de_fondos() -> FullResponseJSON:
     calculator = RetirementCalculator(**request.get_json())
 
     nper = calculator.get_nper_retirements()
@@ -49,7 +50,7 @@ def duracion_de_fondos():
 
 
 @calculators.route("/fondo-para-retiros", methods=["POST"])
-def fondo_para_retiros():
+def fondo_para_retiros() -> FullResponseJSON:
     calculator = RetirementCalculator(**request.get_json())
 
     time_scale = calculator.time_scale
@@ -87,7 +88,7 @@ def fondo_para_retiros():
 
 
 @calculators.route("/retiros-para-agotar-fondos", methods=["POST"])
-def retiros_para_agotar_fondos():
+def retiros_para_agotar_fondos() -> FullResponseJSON:
     calculator = RetirementCalculator(**request.get_json())
 
     time_scale = calculator.time_scale

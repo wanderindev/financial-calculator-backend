@@ -3,7 +3,7 @@ from flask import Flask
 from config import config
 
 
-def create_app(config_name):
+def create_app(config_name: str) -> Flask:
     """
     App factory for the creation of a Flask app.
     :param config_name: The key for the config setting to use

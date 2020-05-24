@@ -3,11 +3,12 @@ from flask import jsonify, request
 from calculators.saving_calculator import SavingCalculator
 from config import HEADERS
 from resources.calculators import calculators
+from resources.custom_typing import FullResponseJSON, SimpleResponseJSON
 from resources.utils import aggregate, format_tables
 
 
 @calculators.route("/ahorros-para-lograr-meta", methods=["POST"])
-def ahorros_para_lograr_meta():
+def ahorros_para_lograr_meta() -> FullResponseJSON:
     calculator = SavingCalculator(**request.get_json())
 
     reg_dep = calculator.get_reg_dep()
@@ -45,7 +46,7 @@ def ahorros_para_lograr_meta():
 
 
 @calculators.route("/calculadora-de-ahorros", methods=["POST"])
-def calculadora_de_ahorros():
+def calculadora_de_ahorros() -> FullResponseJSON:
     calculator = SavingCalculator(**request.get_json())
 
     time_scale = calculator.time_scale
@@ -81,7 +82,7 @@ def calculadora_de_ahorros():
 
 
 @calculators.route("/tasa-de-interes-requerida", methods=["POST"])
-def tasa_de_interes_requerida():
+def tasa_de_interes_requerida() -> SimpleResponseJSON:
     calculator = SavingCalculator(**request.get_json())
 
     rate = calculator.get_rate_savings()
@@ -90,7 +91,7 @@ def tasa_de_interes_requerida():
 
 
 @calculators.route("/tiempo-para-lograr-meta", methods=["POST"])
-def tiempo_para_lograr_meta():
+def tiempo_para_lograr_meta() -> FullResponseJSON:
     calculator = SavingCalculator(**request.get_json())
 
     nper = calculator.get_nper_savings()
@@ -130,7 +131,7 @@ def tiempo_para_lograr_meta():
 
 
 @calculators.route("/valor-actual", methods=["POST"])
-def valor_actual():
+def valor_actual() -> SimpleResponseJSON:
     calculator = SavingCalculator(**request.get_json())
 
     pv = -calculator.get_pres_val()

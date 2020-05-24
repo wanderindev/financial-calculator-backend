@@ -1,5 +1,6 @@
 from math import ceil
 from numpy_financial import fv, nper, pmt, pv, rate
+from typing import List
 
 from .calculator import Calculator
 
@@ -18,7 +19,7 @@ class SavingCalculator(Calculator):
         self.fin_bal = self.get_float(kwargs.get("fin_bal", 0))
         self.deposits = []
 
-    def get_balances_savings(self):
+    def get_balances_savings(self) -> List[float]:
         balances = []
 
         for x in self.periods:
@@ -28,7 +29,7 @@ class SavingCalculator(Calculator):
 
         return self.balances
 
-    def get_deposits(self):
+    def get_deposits(self) -> List[float]:
         reg_deps = self.get_deposits_r()
         extra_deps = self.get_deposits_e()
 
@@ -38,7 +39,7 @@ class SavingCalculator(Calculator):
 
         return self.deposits
 
-    def get_deposits_e(self):
+    def get_deposits_e(self) -> List[float]:
         extra_dep_p = []
 
         if self.extra_dep:
@@ -55,13 +56,13 @@ class SavingCalculator(Calculator):
             self.extra_dep if x in extra_dep_p else 0 for x in self.periods
         ]
 
-    def get_deposits_r(self):
+    def get_deposits_r(self) -> float:
         reg_deps = [self.reg_dep for _ in self.periods]
         reg_deps[0] += self.ini_dep
 
         return reg_deps
 
-    def get_interests_savings(self):
+    def get_interests_savings(self) -> List[float]:
         _rate = self.rate / (100 * self.freq)
         interests = [
             round(
@@ -90,7 +91,7 @@ class SavingCalculator(Calculator):
 
         return self.interests
 
-    def get_nper_savings(self):
+    def get_nper_savings(self) -> int:
         _nper = ceil(
             nper(
                 self.rate / (100 * self.freq),
@@ -108,7 +109,7 @@ class SavingCalculator(Calculator):
 
         return _nper
 
-    def get_pres_val(self):
+    def get_pres_val(self) -> float:
         return pv(
             self.rate / (100 * self.freq),
             self.freq * self.num_of_years,
@@ -117,7 +118,7 @@ class SavingCalculator(Calculator):
             self.dep_when,
         )
 
-    def get_rate_savings(self):
+    def get_rate_savings(self) -> float:
         return (
             rate(
                 self.freq * self.num_of_years,
@@ -130,7 +131,7 @@ class SavingCalculator(Calculator):
             * 100
         )
 
-    def get_reg_dep(self):
+    def get_reg_dep(self) -> float:
         _fv = (
             fv(
                 self.rate / (100 * self.freq),

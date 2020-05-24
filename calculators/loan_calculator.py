@@ -1,5 +1,6 @@
 from math import ceil
 from numpy_financial import nper, pmt, rate
+from typing import List, Tuple
 
 from .calculator import Calculator
 
@@ -20,7 +21,7 @@ class LoanCalculator(Calculator):
         self.payments_r = []
         self.payments_p = []
 
-    def get_balances_loans(self):
+    def get_balances_loans(self) -> List[float]:
         balances = []
 
         for x in self.periods:
@@ -52,7 +53,7 @@ class LoanCalculator(Calculator):
 
         return balances
 
-    def get_interests_loans(self):
+    def get_interests_loans(self) -> List[float]:
         _rate = self.rate / (100 * self.freq)
         interests = [
             round(
@@ -88,7 +89,7 @@ class LoanCalculator(Calculator):
 
         return interests
 
-    def get_nper_loans(self):
+    def get_nper_loans(self) -> int:
         _nper = ceil(
             nper(
                 self.rate / (100 * self.freq),
@@ -105,7 +106,7 @@ class LoanCalculator(Calculator):
 
         return _nper
 
-    def get_payments(self):
+    def get_payments(self) -> Tuple[List[float]]:
         self.payments_r = self.get_payments_r()
         self.payments_e = self.get_payments_e()
 
@@ -119,7 +120,7 @@ class LoanCalculator(Calculator):
 
         return self.payments, self.payments_e, self.payments_r
 
-    def get_payments_e(self):
+    def get_payments_e(self) -> List[float]:
         extra_pmt_p = []
 
         if self.extra_pmt:
@@ -135,7 +136,7 @@ class LoanCalculator(Calculator):
             self.extra_pmt if x in extra_pmt_p else 0 for x in self.periods
         ]
 
-    def get_payments_r(self):
+    def get_payments_r(self) -> List[float]:
         return [self.reg_pmt for _ in self.periods]
 
     def get_rate_loans(self):
@@ -151,7 +152,7 @@ class LoanCalculator(Calculator):
             * 100
         )
 
-    def get_reg_pmt(self):
+    def get_reg_pmt(self) -> float:
         self.reg_pmt = round(
             -pmt(
                 self.rate / (100 * self.freq),
@@ -164,7 +165,7 @@ class LoanCalculator(Calculator):
 
         return self.reg_pmt
 
-    def trunc_periods(self, p):
+    def trunc_periods(self, p: int) -> None:
         self.periods = self.periods[:p]
         self.payments_r = self.payments_r[:p]
         self.payments_e = self.payments_e[:p]

@@ -1,4 +1,5 @@
 from math import ceil
+from typing import List, Tuple
 
 
 # noinspection PyTypeChecker
@@ -29,23 +30,23 @@ class Calculator:
         self.balances = []
 
     @staticmethod
-    def get_float(val):
+    def get_float(val: str) -> float:
         return float(str(val).replace(",", ""))
 
     @staticmethod
-    def get_int(val):
+    def get_int(val: str) -> int:
         return int(str(val).replace(",", ""))
 
-    def get_periods(self):
+    def get_periods(self) -> List[int]:
         return [x + 1 for x in range(ceil(self.freq * self.num_of_years))]
 
-    def get_periods_a(self):
+    def get_periods_a(self) -> List[int]:
         return [x + 1 for x in range(ceil(1 * self.num_of_years))]
 
-    def get_periods_m(self):
+    def get_periods_m(self) -> List[int]:
         return [x + 1 for x in range(ceil(12 * self.num_of_years))]
 
-    def get_time_scale(self, freq):
+    def get_time_scale(self, freq: int) -> Tuple[str, int]:
         f = freq if freq else 12
         for item in self.freq_items:
             if item[1] == f:

@@ -14,7 +14,7 @@ class CreditCardCalculator(Calculator):
         self.payments = []
         self.payments_p = []
 
-    def get_payment_cc(self):
+    def get_payment_cc(self) -> float:
         _rate = self.rate / (100 * self.freq)
         _min_p_perc = self.min_p_perc / 100
         _min_p = self.min_p
@@ -40,5 +40,5 @@ class CreditCardCalculator(Calculator):
 
         return self.payments[0]
 
-    def get_rate_cc(self):
+    def get_rate_cc(self) -> float:
         return self.rate + self.add_c * 1200 / self.cc_debt

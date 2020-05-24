@@ -1,5 +1,6 @@
 from unittest import TestCase
 from app import create_app
+from config import HEADERS
 
 app = create_app("testing")
 
@@ -7,7 +8,7 @@ app = create_app("testing")
 class BaseTest(TestCase):
     """Base class which is inherited by all system test classes."""
 
-    request_headers = {"Content-Type": "application/json"}
+    request_headers = HEADERS
 
     @classmethod
     def setUpClass(cls) -> None:
