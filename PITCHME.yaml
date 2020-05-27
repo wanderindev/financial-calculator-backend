@@ -1,0 +1,70 @@
+#
+# GitPitch Quickstart Markdown Presentation
+#
+
+#
+# Custom fonts
+# Doc: https://gitpitch.com/docs/themes/custom-fonts/
+#
+custom-fonts: [
+  "assets/fonts/IBMPlexSansCondensed-Bold.woff",
+  "assets/fonts/IBMPlexSansCondensed-Medium.woff",
+  "assets/fonts/IBMPlexSansCondensed-Regular.woff",
+  "assets/fonts/IBMPlexSans-Bold.woff",
+  "assets/fonts/IBMPlexSans-BoldItalic.woff",
+  "assets/fonts/IBMPlexSans-Italic.woff",
+  "assets/fonts/IBMPlexSans-Light.woff",
+  "assets/fonts/IBMPlexSans-LightItalic.woff",
+  "assets/fonts/IBMPlexSans-Regular.woff",
+]
+
+#
+# PITCHME.yaml Settings
+# Doc: https://gitpitch.com/docs/settings/
+#
+theme              : template
+theme-override     : assets/css/PITCHME.css
+theme-builder      : false
+highlight          : tomorrow-night-bright
+code-line-numbers  : true
+layout             : center
+# logo             : assets/img/logo.png # Todo: Setup logo
+logo-position      : top-left
+# favicon          : assets/img/fav.ico # Todo: Setup favicon
+transition         : none
+title              : "Javier Feliu - Financial Calculator Project Review"
+footnote           : "<a href='https://github.com/wanderindev'
+                         target='_blank'
+                         rel='nofollow'>Javier Feliu</a>
+                         © 2019-2020. All rights reserved."
+published          : false
+loop               : false
+lang               : "en"
+rtl                : false
+controls-layout    : edges
+print-fragments    : true
+print-notes        : false
+print-footer       : true
+mousewheel         : true
+remote-control     : false
+eager-loading      : true
+charts             : false
+# gatoken          : UA-1111111-1 # Todo: setup google analytics
+# Todo: Replace with blog post content
+# title : "GitPitch Quickstart Markdown Presentation"
+# description : "GitPitch Markdown Presentations for Developers."
+# thumbnail : https://gitpitch.com/gpimg/tutorial-thumb.png
+
+
+#
+# Theme Template
+# Doc: https://gitpitch.com/docs/themes/default
+#
+theme-background: [ "#1585c2" ]
+theme-headline: [ "IBMPlexSansCondensed-Bold", "#FBD95E", "none", "#FFFFFF", "100", "120", "15" ]
+theme-byline: [ "IBMPlexSansCondensed-Medium", "#FFFFFF", "none", "#FBD95E", "100", "110", "15" ]
+theme-text: [ "IBMPlexSans-Regular", "#FFFFFF", "none", "#E67E22", "100", "100", "15" ]
+theme-links: [ "#F1C40F", "#5254F7" ]
+theme-code: [ "Source Code Pro", "100", "120" ]
+theme-controls: [ "#C0C0C0" ]
+theme-margins: [ "0", "15px" ]
