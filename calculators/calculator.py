@@ -3,6 +3,7 @@ from typing import List, Tuple
 
 
 # noinspection PyTypeChecker
+# tag::calculator_class[]
 class Calculator:
     freq_items = [
         (u"Año", 1, 10),
@@ -21,13 +22,14 @@ class Calculator:
         self.num_of_years = self.get_float(kwargs.get("num_of_years", 0))
         self.rate = self.get_float(kwargs.get("rate", 0))
         self.time_scale, rows_per_page = self.get_time_scale(self.freq)
-        self.periods = self.get_periods()
+        self.periods = self.get_periods() # end::calculator_class[]
         self.periods_a = self.get_periods_a()
         self.periods_m = self.get_periods_m()
         self.num_of_years_t = self.num_of_years
         self.nper_t = 0
         self.interests = []
         self.balances = []
+
 
     @staticmethod
     def get_float(val: str) -> float:

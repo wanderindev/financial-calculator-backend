@@ -61,10 +61,10 @@ charts             : false
 # Doc: https://gitpitch.com/docs/themes/default
 #
 theme-background: [ "#1585c2" ]
-theme-headline: [ "IBMPlexSansCondensed-Bold", "#FBD95E", "none", "#FFFFFF", "100", "120", "15" ]
-theme-byline: [ "IBMPlexSansCondensed-Medium", "#FFFFFF", "none", "#FBD95E", "100", "110", "15" ]
-theme-text: [ "IBMPlexSans-Regular", "#FFFFFF", "none", "#E67E22", "100", "100", "15" ]
-theme-links: [ "#F1C40F", "#5254F7" ]
+theme-headline: [ "IBMPlexSansCondensed-Bold", "#fbd95e", "none" ]
+theme-byline: [ "IBMPlexSansCondensed-Medium", "#ffffff", "none" ]
+theme-text: [ "IBMPlexSans-Regular", "#ffffff", "none" ]
+theme-links: [ "#f1c40f", "#5254f7" ]
 theme-code: [ "Source Code Pro", "100", "120" ]
-theme-controls: [ "#C0C0C0" ]
+theme-controls: [ "#c0c0c0" ]
 theme-margins: [ "0", "15px" ]
