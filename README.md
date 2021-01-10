@@ -36,6 +36,7 @@ The Python library NumPy contains 1:1 equivalents to all of Excel's financial fo
 1. You can take a look at the frontend code in [this repository](https://github.com/wanderindev/financial-calculator-frontend).
 2. Find the live calculator [here](https://www.calcfina.com/es/calculadora-de-ahorros.html).
 3. The live backend is [here](https://api.calcfina.com).  The API is open, so you can test it using Postman (see the Postman section below for instructions).
+4. This project runs in a Kubernetes cluster at DigitalOcean.  For information on how to create your cluster visit my [do-managed-kubernetes](https://github.com/wanderindev/do-managed-kubernetes) repository.
 
 ## Install
 To use the project in your development machine, clone it, and go to the project's root:
@@ -66,12 +67,16 @@ To test against the live backend, add a `url` variable to the Postman environmen
 
 ## Deployment
 
-Replace the SECRET_KEY in line 32 of Dockerfile and run:
+Before deployment, you have to replace the SECRET_KEY in line 32 of the Dockerfile for something, well, secret.  **Make sure you don't commit the modified Dockerfile to version control**.
+
+Next, you need to build the Docker image for the project and push it to your Docker Hub account:
 ```sh
 docker build -t wanderindev/fc-backend .
 docker push wanderindev/fc-backend
 ```
-Then, from the root of do-kubernetes project:
+Replace ```wanderindev``` above (my Docker Hub account id) with your Docker Hub id.
+
+Then, from the root of [do-managed-kubernetes](https://github.com/wanderindev/do-managed-kubernetes) project run:
 ```sh
 kubectl delete deployment fc-backend
 kubectl apply -f ./python/fc-backend.yml
@@ -81,14 +86,12 @@ to create two pods running the backend and a service exposing them at port 80.
 For more information on deploying to a Kubernetes cluster, visit 
 my [do-managed-kubernetes](https://github.com/wanderindev/do-managed-kubernetes) repository.
 
-For information on the financial calculator frontend, visit 
-my [financial-calculator-frontend](https://github.com/wanderindev/financial-calculator-frontend) repository.
-
 ## Author
 
 👤 **Javier Feliu**
 
 * Twitter: [@JavierFeliuA](https://twitter.com/JavierFeliuA)
+* Blog: [Wander In Dev](https://wanderin.dev)
 * Github: [@wanderindev](https://github.com/wanderindev)
 
 ## Show your support
