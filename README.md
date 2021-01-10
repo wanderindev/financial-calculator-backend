@@ -57,6 +57,13 @@ The ```calculators``` package contains all de classes for the different financia
 
 The ```resources``` package contains all the endpoints
 
+## Postman
+Import `fc-backend.postman_collection.json` into Postman for a collection of all endpoints.
+
+Add a `url` variable to the environment with value `http://localhost:5001` for development.  Make sure you have a container running the backend as per instructions above before sending requests.
+
+To test against the live backend, add a `url` variable to the Postman environment with value `https://api.calcfina.com` and send your requests.
+
 ## Deployment
 
 Replace the SECRET_KEY in line 32 of Dockerfile and run:
@@ -76,12 +83,6 @@ my [do-managed-kubernetes](https://github.com/wanderindev/do-managed-kubernetes)
 
 For information on the financial calculator frontend, visit 
 my [financial-calculator-frontend](https://github.com/wanderindev/financial-calculator-frontend) repository.
-
-## Postman
-Import `fc-backend.postman_collection.json` into Postman for a collection of all endpoints.
-
-Add a `url` variable to the environment with value `http://localhost:5001` for development or
-`https://fc-backend.wanderin.dev` for production.
 
 ## Author
 
