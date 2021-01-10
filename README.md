@@ -38,20 +38,26 @@ The Python library NumPy contains 1:1 equivalents to all of Excel's financial fo
 3. The live backend is [here](https://api.calcfina.com).  The API is open, so you can test it using Postman (see the Postman section below for instructions).
 
 ## Install
-
+To use the project in your development machine, clone it, and go to the project's root:
 ```sh
 git clone https://github.com/wanderindev/financial-calculator-backend.git
 cd financial-calculator-backend
 ```
 
-## Usage
+## Development
 During develpment use:
 ```sh
 docker-compose up --build
 ```
 to create a container running the backend.  Access the container at `http://localhost:5001`
 
-For deployment:
+Modify the code as needed and test using Postman (see instructions below), sending requests to the container running at localhost.
+
+The ```calculators``` package contains all de classes for the different financial calculators. 
+
+The ```resources``` package contains all the endpoints
+
+## Deployment
 
 Replace the SECRET_KEY in line 32 of Dockerfile and run:
 ```sh
