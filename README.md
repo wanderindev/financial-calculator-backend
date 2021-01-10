@@ -81,7 +81,7 @@ To test the project, make sure your virtual environment is activated and run:
 ```sh
 python -m unittest tests/test_credit_card_calculators.py tests/test_loan_calculators.py tests/test_retirement_calculators.py tests/test_saving_calculators.py
 ```
-The included tests provide 98% coverage for the code base.  You can find the coverage report [here](https://htmlpreview.github.io/?https://github.com/wanderindev/financial-calculator-backend/blob/master/htmlcov/index.html).
+The included tests provide 98% coverage for the codebase.  You can find the coverage report [here](https://htmlpreview.github.io/?https://github.com/wanderindev/financial-calculator-backend/blob/master/htmlcov/index.html).
 
 ## Deployment
 
