@@ -44,6 +44,15 @@ To use the project in your development machine, clone it, and go to the project'
 git clone https://github.com/wanderindev/financial-calculator-backend.git
 cd financial-calculator-backend
 ```
+From the project's root, create and activate your virtual environment:
+```sh
+python3 -m venv venv
+. venv/bin/activate
+```
+And install the project's dependencies:
+```sh
+pip install -r requirements.txt
+```
 
 ## Development
 During develpment use:
@@ -66,7 +75,9 @@ Add a `url` variable to the environment with value `http://localhost:5001` for d
 To test against the live backend, add a `url` variable to the Postman environment with value `https://api.calcfina.com` and send your requests.
 
 ### Tests
-To insure code quality, I added UnitTest to the project.  All tests all located in the ```tests``` package.  You can run them using:
+To insure code quality, I added UnitTest to the project.  All tests all located in the ```tests``` package.  
+
+To test the project, make sure your virtual environment is activated and run:
 ```sh
 python -m unittest tests/test_credit_card_calculators.py tests/test_loan_calculators.py tests/test_retirement_calculators.py tests/test_saving_calculators.py
 ```
