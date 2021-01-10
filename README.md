@@ -23,7 +23,7 @@ This project contains an API for a financial calculator.  I coded this project i
 
 In conjunction with the [Financial Calculator Frontend](https://github.com/wanderindev/financial-calculator-frontend), this project provides a companion calculator for the personal finance book ["Mejora Tu Situación."](https://www.amazon.com/Mejora-ituaci%C3%B3n-necesitas-personales-calcularlo-ebook/dp/B08DN9L7V9?_encoding=UTF8&camp=1789&creative=9325&linkCode=ur2&tag=storypodca-20&linkId=2P4S6EY6B462X4AR)  
 
-###Design Considerations
+### Design Considerations
 For this project, the book author presented me with a series of calculators built on MS Excel.  The goal was to produce an online calculator that, given the same inputs, would return the same results as the Excel samples.
 
 Most of Excel's financial formulas have the calculation method obfuscated.  That is, you can't see how it arrives at the result.  
@@ -32,7 +32,7 @@ The Python library NumPy contains 1:1 equivalents to all of Excel's financial fo
 1. An API in Python would receive the calculation parameters from the frontend and return the results calculated with NumPy.
 2. A frontend would provide a user interface for receiving calculation parameters and presenting the results.
 
-###Important links
+### Important links
 1. You can take a look at the frontend code in [this repository](https://github.com/wanderindev/financial-calculator-frontend).
 2. Find the live calculator [here](https://www.calcfina.com/es/calculadora-de-ahorros.html).
 3. The live backend is [here](https://api.calcfina.com).  The API is open, so you can test it using Postman (see the Postman section below for instructions).
