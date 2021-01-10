@@ -1,6 +1,6 @@
 import json
 import unittest
-from tests.base_test import BaseTest
+from tests.test_base import BaseTest
 from tests.credit_card_constants import (
     T_INTERES_REAL_JSON,
     T_INTERES_REAL_RESULT,

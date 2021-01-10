@@ -11,10 +11,10 @@ class BaseTest(TestCase):
     request_headers = HEADERS
 
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpClass(cls):
         pass
 
-    def setUp(self) -> None:
+    def setUp(self):
         """Create all db tables before each test."""
         self.client = app.test_client()
         self.app_context = app.app_context()

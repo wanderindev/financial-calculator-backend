@@ -1,6 +1,6 @@
 import json
 import unittest
-from tests.base_test import BaseTest
+from tests.test_base import BaseTest
 from tests.loan_constants import (
     INTERES_JSON_0,
     INTERES_JSON_1,

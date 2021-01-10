@@ -1,6 +1,6 @@
 import json
 import unittest
-from tests.base_test import BaseTest
+from tests.test_base import BaseTest
 from tests.retirement_constants import (
     DURACION_DE_FONDO_JSON_0,
     DURACION_DE_FONDO_JSON_1,
