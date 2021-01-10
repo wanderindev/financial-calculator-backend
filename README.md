@@ -29,11 +29,11 @@ For this project, the book author presented me with a series of calculators buil
 Most of Excel's financial formulas have the calculation method obfuscated.  That is, you can't see how it arrives at the result.  
 
 The Python library NumPy contains 1:1 equivalents to all of Excel's financial formulas.  For this reason, I decided to break up the problem into two: 
-1. An API in Python would receive the calculation parameters from the frontend and return the results calculated with NumPy.
-2. A frontend would provide a user interface for receiving calculation parameters and presenting the results.
+1. **(This repository)** An API in Python would receive the calculation parameters from the frontend and return the results calculated with NumPy.
+2. **([The frontend repository](https://github.com/wanderindev/financial-calculator-frontend))** A frontend would provide a user interface for receiving calculation parameters and presenting the results.
 
 ### Important links
-1. You can take a look at the frontend code in [this repository](https://github.com/wanderindev/financial-calculator-frontend).
+1. You can take a look at the frontend code [here](https://github.com/wanderindev/financial-calculator-frontend).
 2. Find the live calculator [here](https://www.calcfina.com/es/calculadora-de-ahorros.html).
 3. The live backend is [here](https://api.calcfina.com).  The API is open, so you can test it using Postman (see the Postman section below for instructions).
 4. This project runs in a Kubernetes cluster at DigitalOcean.  For information on how to create your cluster visit my [do-managed-kubernetes](https://github.com/wanderindev/do-managed-kubernetes) repository.
