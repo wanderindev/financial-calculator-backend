@@ -97,7 +97,7 @@ Replace ```wanderindev``` above (my Docker Hub account id) with your Docker Hub 
 Then, from the root of [do-managed-kubernetes](https://github.com/wanderindev/do-managed-kubernetes) project run:
 ```sh
 kubectl delete deployment api-calcfina
-kubectl apply -f ./python/fc-backend.yml
+kubectl apply -f ./python/api-calcfina.yml
 ```
 to create two pods running the backend and a service exposing them at port 80.
 
